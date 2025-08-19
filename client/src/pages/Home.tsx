@@ -9,14 +9,6 @@ function Home() {
           <h2 className="text-xl font-semibold">Classic</h2>
           <p className="text-sm text-zinc-600 dark:text-zinc-400">The standard mode to get started quickly.</p>
         </Link>
-        <Link to="/game?mode=quick" className="block rounded-lg border border-zinc-200 dark:border-zinc-800 p-4 hover:shadow-sm hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition">
-          <h2 className="text-xl font-semibold">Quick</h2>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">Shorter turns, more action.</p>
-        </Link>
-        <Link to="/game?mode=custom" className="block rounded-lg border border-zinc-200 dark:border-zinc-800 p-4 hover:shadow-sm hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition">
-          <h2 className="text-xl font-semibold">Custom</h2>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">Tweak the settings as you like.</p>
-        </Link>
       </div>
     </main>
   )
