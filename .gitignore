@@ -1,0 +1,42 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Builds / Output
+dist/
+build/
+.out/
+.next/
+.nuxt/
+.svelte-kit/
+storybook-static/
+
+# Caches
+.cache/
+.parcel-cache/
+.vite/
+.eslintcache
+turbo/
+
+# TypeScript
+*.tsbuildinfo
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+
