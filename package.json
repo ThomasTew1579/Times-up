@@ -5,14 +5,18 @@
     "client",
     "serveur"
   ],
+  "homepage": "https://ThomasTew1579.github.io/Times-up",
   "scripts": {
+    "predeploy": "npm run build && cp client/dist/index.html client/dist/404.html",
+    "deploy": "gh-pages -d client/dist -b gh-pages",
     "dev": "npm run dev:client",
     "dev:client": "npm --prefix client run dev",
     "build": "npm run build:client",
     "build:client": "npm --prefix client run build",
     "dev:serveur": "npm --prefix serveur run dev || echo \"No dev script in serveur/\"",
     "build:serveur": "npm --prefix serveur run build || echo \"No build script in serveur/\""
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
   }
 }
-
-

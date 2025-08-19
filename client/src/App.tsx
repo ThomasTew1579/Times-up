@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { Routes, Route, Link } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import './App.css'
 import Menu from './components/Menu'
 import MenuItem from './components/MenuItem'
@@ -11,7 +10,6 @@ import ClassicGame from './pages/ClassicGame'
 import ClassicGameSetup from './pages/ClassicGameSetup'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>

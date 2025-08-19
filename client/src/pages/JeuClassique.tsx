@@ -130,15 +130,6 @@ function JeuClassique() {
     nextCarte()
   }
 
-  function resetTimer() {
-    setRemaining(duration)
-    setIsRunning(false)
-  }
-
-  function changeDuration(newVal: number) {
-    setDuration(newVal)
-    setRemaining(newVal)
-  }
 
   // End of round detection (no more pending cards)
   const [showRoundRecap, setShowRoundRecap] = useState(false)

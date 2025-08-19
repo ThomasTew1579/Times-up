@@ -1,5 +1,5 @@
-import { ReactNode } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, type NavLinkProps } from 'react-router-dom'
+import type { ReactNode } from 'react'
 
 type MenuItemProps = {
   children: ReactNode
@@ -22,14 +22,15 @@ function MenuItem({ children, href, onClick }: MenuItemProps) {
         </li>
       )
     }
+
+    const linkClassName: NavLinkProps['className'] = ({ isActive }) =>
+        baseClass + (isActive ? activeClass : inactiveClass)
     return (
       <li className="list-none">
         <NavLink
           to={href}
           end={href === '/'}
-          className={({ isActive }) =>
-            (baseClass + (isActive ? activeClass : inactiveClass))
-          }
+          className={linkClassName}
         >
           {children}
         </NavLink>
