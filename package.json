@@ -17,6 +17,10 @@
     "build:serveur": "npm --prefix serveur run build || echo \"No build script in serveur/\""
   },
   "devDependencies": {
+    "@tailwindcss/nesting": "^0.0.0-insiders.565cd3e",
     "gh-pages": "^6.3.0"
+  },
+  "dependencies": {
+    "postcss-nesting": "^13.0.2"
   }
 }

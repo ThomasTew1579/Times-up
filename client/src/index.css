@@ -1,5 +1,19 @@
 @import "tailwindcss";
+@config "../tailwind.config.ts";
 
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
+
+@font-face {
+    font-family: 'LuckiestGuy' ;
+    src: url(./assets/font/LuckiestGuy-Regular.woff2);
+}
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    @apply relative scroll-smooth;
+
+}
