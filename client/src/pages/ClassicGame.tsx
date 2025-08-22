@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import cartes from '../assets/liste_cartes.json'
+import GameCard from '../components/GameCard'
 
 type Carte = {
   nom: string
@@ -155,49 +156,54 @@ function JeuClassique() {
   const topTotal = finalRows[0]?.total ?? 0
 
   return (
-    <main className="mx-auto max-w-3xl px-4 py-8">
+    <main className="mx-auto container max-w-3xl px-4 py-8">
 
       <section className="mb-6 flex items-center gap-4">
         <div className="text-center">
-          <div className="text-5xl font-bold tabular-nums">{remaining}s</div>
-          <div className="text-xs text-zinc-500">Time remaining</div>
+          <div className="text-5xl font-bold font-primary text-white tabular-nums">{remaining}s</div>
+          <div className="text-xs text-white">Temps restant</div>
         </div>
-        <div className="ml-auto flex items-center gap-3">
-          <div className="text-sm text-zinc-700 dark:text-zinc-200">
+        <div className="ml-auto flex items-center text-white gap-3">
+          <div className="text-sm ">
             Team <span className="font-semibold">{teamNames[currentPlayerIndex] ?? `Team ${joueurActuel}`}</span> ({joueurActuel}/{joueurs})
           </div>
-          <div className="text-xs text-zinc-500">{avancee}</div>
+          <div className="text-xs ">{avancee}</div>
         </div>
       </section>
 
-      {/* sélecteur de durée retiré: la durée provient de l'URL (page setup) */}
 
-      <section className="mb-6 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 dark:text-white p-5 shadow-sm">
+      <section className="mb-6 flex justify-center">
         {carte ? (
           <>
-            <div className="text-2xl font-semibold mb-2">{carte.nom}</div>
+        <GameCard>
+          <div className="text-2xl text-primary-900 text-center font-primary">{carte.nom}</div>
+          <div className="desc text-xs">
             {carte.description && (
-              <p className="text-zinc-700 dark:text-zinc-300 mb-1">{carte.description}</p>
+              <p className="text-white text-center">{carte.description}</p>
             )}
             {carte.date && (
-              <p className="text-sm text-zinc-500">{carte.date}</p>
+              <p className=" text-white text-center">{carte.date}</p>
             )}
+          </div>
+        </GameCard>
+
+            
           </>
         ) : (
           <div className="text-zinc-600 dark:text-zinc-300">No card available.</div>
         )}
       </section>
 
-      <section className="flex flex-wrap items-center gap-2">
+      <section className="flex flex-wrap  items-center gap-2">
         <button
-          className="rounded-md bg-emerald-600 text-white px-3 py-2 text-sm font-medium hover:bg-emerald-700 active:bg-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
+          className="rounded-md bg-emerald-600 text-white px-3 py-2 text-sm font-medium hover:bg-emerald-700 active:bg-emerald-800 focus-visible:outlinez focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
           onClick={handleValidate}
           disabled={!isRunning || !carte}
         >
-          Validate
+          Valider
         </button>
         <button
-          className="rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-100 px-3 py-2 text-sm font-medium hover:bg-zinc-200 dark:hover:bg-zinc-700"
+          className="rounded-md text-white bg-red-500 px-3 py-2 text-sm font-medium hover:bg-zinc-200 dark:hover:bg-zinc-700"
           onClick={handleSkip}
           disabled={!isRunning || !carte}
         >
@@ -211,7 +217,7 @@ function JeuClassique() {
       {showIntermission && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur px-4">
           <div className="w-full max-w-md rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 dark:text-white p-6 shadow-xl">
-            <h2 className="text-xl font-semibold mb-2">Next team</h2>
+            <h2 className="text-xl font-semibold mb-2">Équipes suivante</h2>
             <p className="mb-4 text-sm text-zinc-700 dark:text-zinc-300">{teamNames[(currentPlayerIndex + 1) % joueurs] ?? `Team ${(currentPlayerIndex + 1) % joueurs + 1}`}</p>
             <div className="flex gap-2 justify-end">
               <button
@@ -232,18 +238,28 @@ function JeuClassique() {
       )}
 
       {/* Scoreboard */}
-      <div className="mt-8 sticky bottom-0 z-40 w-full bg-white/90 dark:bg-zinc-900/80 backdrop-blur border-t border-zinc-200 dark:border-zinc-800">
-        <div className="mx-auto max-w-3xl px-4 py-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+      <div className="mt-8 sticky bottom-0 z-40 w-full ">
+        <div className="mx-auto max-w-3xl grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1">
           {Array.from({ length: joueurs }).map((_, idx) => (
             <div
               key={idx}
-              className={`rounded-md px-3 py-2 text-sm ${idx === currentPlayerIndex ? 'bg-indigo-50 dark:bg-indigo-500/10 ring-1 ring-inset ring-indigo-200 dark:ring-indigo-500/30' : 'bg-zinc-50 dark:bg-zinc-800'}`}
+              className={`rounded-md p-2 text-sm border ${idx === currentPlayerIndex ? ' bg-secondary-500 border-primary-900 text-primary-900' : 'bg-primary-900 text-white border-white '}`}
             >
-              <div className="font-medium">{teamNames[idx] ?? `Team ${idx + 1}`}</div>
-              <div className="text-zinc-600 dark:text-zinc-300">
-                R1: {scoresByRound[0]?.[idx] ?? 0} · R2: {scoresByRound[1]?.[idx] ?? 0} · R3: {scoresByRound[2]?.[idx] ?? 0}
+              <div className="text-xs flex justify-between">
+                {teamNames[idx] ?? `Team ${idx + 1}`} 
+                <div >Total: {(scoresByRound[0]?.[idx] ?? 0) + (scoresByRound[1]?.[idx] ?? 0) + (scoresByRound[2]?.[idx] ?? 0)}</div>
               </div>
-              <div className="text-xs text-zinc-500 dark:text-zinc-400">Total: {(scoresByRound[0]?.[idx] ?? 0) + (scoresByRound[1]?.[idx] ?? 0) + (scoresByRound[2]?.[idx] ?? 0)}</div>
+              <div className="text-current grid grid-cols-3 *:text-center border border-current rounded-md">
+                <span className='border-r '>
+                  {scoresByRound[0]?.[idx] ?? 0} 
+                </span>
+                <span className='border-r '>
+                  {scoresByRound[1]?.[idx] ?? 0} 
+                </span> 
+                <span>
+                  {scoresByRound[2]?.[idx] ?? 0} 
+                </span>
+              </div>
             </div>
           ))}
         </div>
