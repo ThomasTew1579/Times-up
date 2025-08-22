@@ -1,19 +1,32 @@
 @import "tailwindcss";
-@config "../tailwind.config.ts";
 
-/* @tailwind base;
-@tailwind components;
-@tailwind utilities; */
+@import "./App.css";
 
 @font-face {
     font-family: 'LuckiestGuy' ;
     src: url(./assets/font/LuckiestGuy-Regular.woff2);
 }
-html {
-    scroll-behavior: smooth;
+
+@theme {
+    --font-primary:'LuckiestGuy';
+
+    --color-primary-200:oklch(0.51 0.16 253.22);
+    --color-primary-500:oklch(0.48 0.15 254.07);
+    --color-primary-900:oklch(0.39 0.13 255.32);
+
+    --color-secondary-500:oklch(0.88 0.17 93.33);
+    
+    --color-tertiary-500:oklch(0.6 0.22 32.84);
+
+    --breakpoint-*: initial;
+    --breakpoint-sm: 40rem;
+    --breakpoint-md: 48rem;
+    --breakpoint-lg: 64rem;
+    --breakpoint-xl: 80rem;
+    --breakpoint-2xl: 96rem;
+    --breakpoint-3xl: 120rem;
+
+    --container-*:initial;
 }
 
-body {
-    @apply relative scroll-smooth;
 
-}
