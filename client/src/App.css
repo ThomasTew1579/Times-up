@@ -1,12 +1,1 @@
 
-
-body {
-    background-image: url(./assets/images/spirale-bg.webp);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-blend-mode:multiply;
-    background-color: var(--color-primary-200);
-
-    height: 100dvh;
-}
