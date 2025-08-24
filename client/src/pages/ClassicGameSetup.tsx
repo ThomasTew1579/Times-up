@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import IntermissionCard from '../components/IntermissionCard'
 
 function JeuClassiqueSetup() {
   const navigate = useNavigate()
@@ -7,6 +8,7 @@ function JeuClassiqueSetup() {
   const [teams, setTeams] = useState<number>(4)
   const [teamNames, setTeamNames] = useState<string[]>(['Équipes 1','Équipes 2','Équipes 3','Équipes 4'])
   const [nbCartes, setNbCartes] = useState<number>(40)
+  const [showIntermission, setShowIntermission] = useState<boolean>(false)
 
   useEffect(() => {
     setTeamNames((prev) => {
@@ -88,12 +90,25 @@ function JeuClassiqueSetup() {
 
         <div className="pt-2">
           <button
-            type="submit"
+            type='button'
             className="w-full rounded-md bg-primary-900 text-white px-4 py-2 text-sm font-medium hover:bg-indigo-700 focus-visible:outline  focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+            onClick={() => setShowIntermission(true)}
           >
-            Start
+            Démarrer le jeu
           </button>
         </div>
+
+        {showIntermission && (
+        <IntermissionCard>
+          <p className="mb-4 text-sm text-zinc-700 dark:text-zinc-300">Équipe {teamNames[0]}</p>
+          <button
+            type='submit'
+            className="w-full rounded-md bg-primary-900 text-white px-4 py-2 text-sm font-medium hover:bg-indigo-700 focus-visible:outline  focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+            >
+              C'est parti !
+          </button>
+        </IntermissionCard>
+        )}
       </form>
     </main>
   )
