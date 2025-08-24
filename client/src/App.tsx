@@ -4,6 +4,7 @@ import MenuItem from './components/MenuItem'
 import Home from './pages/Home'
 import ClassicGame from './pages/ClassicGame'
 import ClassicGameSetup from './pages/ClassicGameSetup'
+import Proposal from './pages/Proposal'
 
 function App() {
 
@@ -11,11 +12,13 @@ function App() {
     <>
       <Menu>
         <MenuItem href="/">Home</MenuItem>
+        <MenuItem href="/proposal">Propositions</MenuItem>
       </Menu>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/game/classic/setup" element={<ClassicGameSetup />} />
         <Route path="/game/classic" element={<ClassicGame />} />
+        <Route path="/proposal" element={<Proposal />} />
       </Routes>
     </>
   )
