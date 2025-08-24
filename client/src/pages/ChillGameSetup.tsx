@@ -1,88 +1,30 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import IntermissionCard from '../components/IntermissionCard'
 
 function ChillGameSetup() {
   const navigate = useNavigate()
-  // const [duree, setDuree] = useState<number>(20)
-  const [teams, setTeams] = useState<number>(2)
-  const [teamNames, setTeamNames] = useState<string[]>(['Équipes 1','Équipes 2','Équipes 3','Équipes 4'])
   const [nbCartes, setNbCartes] = useState<number>(60)
-  const [showIntermission, setShowIntermission] = useState<boolean>(false)
-
-  useEffect(() => {
-    setTeamNames((prev) => {
-      const next = prev.slice(0, teams)
-      while (next.length < teams) next.push(`Équipes ${next.length + 1}`)
-      return next
-    })
-  }, [teams])
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault()
-    const namesParam = encodeURIComponent(teamNames.join('|'))
-    navigate(`/game/chill?&teams=${teams}&nbCartes=${nbCartes}&teamNames=${namesParam}`)
+    navigate(`/game/chill?&nbCartes=${nbCartes}`)
   }
 
   return (
     <main className="mx-auto container max-w-xl px-4 py-8">
       <h1 className="text-3xl font-bold font-secondary text-center text-white mb-6">Mode chill - Configuration</h1>
       <form onSubmit={onSubmit} className="space-y-6">
-        {/* <div className="space-y-2">
-          <label htmlFor="duree" className="block text-sm font-medium text-white font-primary">Durée du tour</label>
-          <select
-            id="duree"
-            value={duree}
-            onChange={(e) => setDuree(Number(e.target.value))}
-            className="w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-primary-900 dark:text-white px-3 py-2 text-sm"
-          >
-            <option value={10}>10 secondes</option>
-            <option value={20}>20 secondes</option>
-            <option value={30}>30 secondes</option>
-            <option value={60}>60 secondes</option>
-          </select>
-        </div> */}
-
-        <div className="space-y-2">
-          <label htmlFor="teams" className="block text-sm font-medium text-white font-primary">Nombre d'équipes</label>
-          <input
-            id="teams"
-            type="range"
-            min={2}
-            max={6}
-            value={teams}
-            onChange={(e) => setTeams(Number(e.target.value))}
-            className="w-full"
-          />
-          <div className="text-sm text-white">{teams} équipes</div>
-        </div>
-
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-white font-primary">Noms des équipes</label>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            {teamNames.map((name, idx) => (
-              <input
-                key={idx}
-                type="text"
-                value={name}
-                onChange={(e) => setTeamNames((arr) => arr.map((n, i) => (i === idx ? e.target.value : n)))}
-                className="w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-primary-900 dark:text-white px-3 py-2 text-sm"
-                placeholder={`Team ${idx + 1}`}
-              />
-            ))}
-          </div>
-        </div>
 
         <div className="space-y-2">
           <label htmlFor="nbCartes" className="block text-sm font-medium text-white font-primary">Nombre de cartes</label>
           <input
             id="nbCartes"
             type="number"
-            min={teams}
+            min={2}
             max={500}
-            step={teams}
+            step={2}
             value={nbCartes}
-            onChange={(e) => setNbCartes(Math.max(teams, Number(e.target.value)))}
+            onChange={(e) => setNbCartes(Math.max(2, Number(e.target.value)))}
             className="w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:text-white dark:bg-primary-900 px-3 py-2 text-sm"
           />
           <div className="text-sm text-white">{nbCartes} cartes (seront arrondies pour être réparties uniformément)</div>
@@ -90,25 +32,13 @@ function ChillGameSetup() {
 
         <div className="pt-2">
           <button
-            type='button'
+            type='submit'
             className="w-full rounded-md bg-primary-900 text-white px-4 py-2 text-sm font-medium hover:bg-indigo-700 focus-visible:outline  focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-            onClick={() => setShowIntermission(true)}
           >
             Démarrer le jeu
           </button>
         </div>
 
-        {showIntermission && (
-        <IntermissionCard>
-          <p className="mb-4 text-sm text-zinc-700 dark:text-zinc-300">Équipe {teamNames[0]}</p>
-          <button
-            type='submit'
-            className="w-full rounded-md bg-primary-900 text-white px-4 py-2 text-sm font-medium hover:bg-indigo-700 focus-visible:outline  focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-            >
-              C'est parti !
-          </button>
-        </IntermissionCard>
-        )}
       </form>
     </main>
   )
