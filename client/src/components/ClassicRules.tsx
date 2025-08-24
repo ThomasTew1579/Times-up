@@ -6,11 +6,11 @@ export default function ClassicRules() {
             <header className="mb-8 sm:mb-10">
             <h2 id="titre-regles" className="text-2xl sm:text-3xl font-extrabold tracking-tight">
                 <span className="text-white font-primary">
-                Règles du jeu — Version web
+                Règles du jeu - Version web
                 </span>
             </h2>
             <p className="mt-2 text-sm text-white">
-                Basé sur le principe original de Time’s Up! – adapté pour une utilisation web.
+                Basé sur le principe original de Time’s Up! - adapté pour une utilisation web.
             </p>
         
             <nav className="mt-4 flex flex-wrap gap-2">
@@ -65,7 +65,7 @@ export default function ClassicRules() {
                 </ol>
         
                 <p className="mt-4 rounded-xl border-l-4 border-amber-500 bg-amber-50 p-3 text-amber-900 italic">
-                    À la fin du sablier, l’équipe adverse crie <span className="not-italic font-semibold">«&nbsp;Time’s Up!&nbsp;»</span>.
+                    À la fin du timer, l’équipe adverse crie <span className="not-italic font-semibold">«&nbsp;Time’s Up!&nbsp;»</span>.
                 </p>
                 </section>
         
