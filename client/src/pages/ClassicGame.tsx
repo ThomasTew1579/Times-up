@@ -156,6 +156,7 @@ function JeuClassique() {
   }, [joueurs, scoresByRound])
   const topTotal = finalRows[0]?.total ?? 0
 
+
   return (
     <main className="mx-auto container max-w-3xl px-4 py-8">
 
@@ -176,7 +177,8 @@ function JeuClassique() {
       <section className="mb-6 flex justify-center">
         {carte ? (
           <>
-        <GameCard>
+        <GameCard
+        >
           <div className="text-2xl text-primary-900 text-center font-primary">{carte.nom}</div>
           <div className="desc text-xs">
             {carte.description && (

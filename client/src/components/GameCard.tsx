@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import type { ReactNode } from 'react'
+import { useState } from "react";
 
 type GameCardProps = {
   children: ReactNode
@@ -7,12 +8,18 @@ type GameCardProps = {
 }
 
 function GameCard({children, href}: GameCardProps): any {
+    const [displayCard, setDisplayCard] = useState(true);
+
+    function handleClickCard() {
+        return displayCard ? setDisplayCard(false) : setDisplayCard(true);
+    }
+
     if  (href)return (
         <Link 
             to={href}
             end={href === '/'}
-            className="block p-2 rounded-2xl max-w-96 shadow-2xl outline-2 outline-primary-900 bg-white aspect-[85/55] relative group">
-                <div className="flex h-full flex-col gap-12 justify-center items-center p-4 bg-spirale bg-secondary-500 outline-primary-900 group-hover:rotate-1 group-hover:scale-[90%] duration-200 rounded-xl overflow-clip relative">
+            className="block p-2 rounded-2xl max-w-96 shadow-2xl outline-2 outline-primary-900 bg-white aspect-[85/55] relative hover:rotate-1 hover:scale-[90%] duration-200">
+                <div className="flex h-full flex-col gap-12 justify-center items-center p-4 bg-spirale bg-secondary-500 outline-primary-900  rounded-xl overflow-clip relative">
                     <div className="content flex flex-col h-auto gap-12 justify-cente z-20">
                         {children} 
                     </div>
@@ -26,9 +33,13 @@ function GameCard({children, href}: GameCardProps): any {
                 </div>
         </Link> 
     )
-    if  (!href || href === "")return (
+    if  (!href || href === "") {
+        const classDisplay: string = "block p-2 rounded-2xl max-w-96 w-full shadow-2xl outline-2 outline-primary-900 bg-white aspect-[85/55] relative duration-200";
+        const classDisplayOff: string = classDisplay + " blur-md grayscale scale-75 rotate-4";
+        return (
         <div 
-            className="block p-2 rounded-2xl max-w-96 w-full shadow-2xl outline-2 outline-primary-900 bg-white aspect-[85/55] relative ">
+            onClick={handleClickCard}
+            className={displayCard ? classDisplay: classDisplayOff}>
                 <div className="flex h-full flex-col gap-12 justify-center items-center p-4 bg-spirale bg-secondary-500 outline-primary-900 rounded-xl overflow-clip relative">
                     <div className="content flex flex-col h-auto gap-12 justify-cente z-20">
                         {children} 
@@ -43,6 +54,7 @@ function GameCard({children, href}: GameCardProps): any {
                 </div>
         </div> 
     )
+    }
 }
 
 export default GameCard
