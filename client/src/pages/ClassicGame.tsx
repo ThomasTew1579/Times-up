@@ -286,9 +286,10 @@ function JeuClassique() {
                     setRemaining(duration)
                     setIsRunning(true)
                     setShowRoundRecap(false)
+                    setShowIntermission(true)
                   }}
                 >
-                  Start next round
+                  Tour suivant
                 </button>
               ) : (
                 <button
@@ -298,7 +299,7 @@ function JeuClassique() {
                     setShowFinalRecap(true)
                   }}
                 >
-                  View final results
+                  Voir les résultats
                 </button>
               )}
             </div>
