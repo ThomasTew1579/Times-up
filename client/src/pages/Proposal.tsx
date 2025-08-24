@@ -104,11 +104,11 @@ export default function CharacterJsonMailer() {
               {
                   items.length !== 1 && ( 
                       <div className="flex items-start justify-between">
-                <h2 className="font-medium">Carte No{i + 1}</h2>
+                <h2 className="text-2xl text-white font-primary">Carte #{i + 1}</h2>
                 <button
                         type="button"
                         onClick={() => removeItem(i)}
-                        className="text-sm rounded-lg border px-2 py-1 hover:bg-zinc-50"
+                        className="text-sm rounded-lg border px-2 py-1 text-white border-white"
                         disabled={items.length === 1}
                         title={items.length === 1 ? "Au moins un élément requis" : "Supprimer"}
                     >
@@ -159,7 +159,9 @@ export default function CharacterJsonMailer() {
               <div>
                 <label className="block text-sm text-white font-medium mb-1">Date</label>
                 <input
-                  type="date"
+                  type="number"
+                  step="any" 
+                  placeholder="1934"
                   value={it.startDate}
                   onChange={(e) => updateItem(i, "startDate", e.target.value)}
                   className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
@@ -167,7 +169,9 @@ export default function CharacterJsonMailer() {
               </div>
               <div>
                 <input
-                  type="date"
+                  type="number"
+                  step="1" 
+                  placeholder="2014"
                   value={it.endDate}
                   onChange={(e) => updateItem(i, "endDate", e.target.value)}
                   className="w-full rounded-lg border border-zinc-300 bg-white mt-6 px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
