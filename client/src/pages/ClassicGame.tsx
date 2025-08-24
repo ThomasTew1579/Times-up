@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import cartes from '../assets/liste_cartes.json'
 import GameCard from '../components/GameCard'
+import IntermissionCard from '../components/IntermissionCard'
 
 type Carte = {
   nom: string
@@ -215,26 +216,23 @@ function JeuClassique() {
       </section>
 
       {showIntermission && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur px-4">
-          <div className="w-full max-w-md rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 dark:text-white p-6 shadow-xl">
-            <h2 className="text-xl font-semibold mb-2">Équipes suivante</h2>
-            <p className="mb-4 text-sm text-zinc-700 dark:text-zinc-300">{teamNames[(currentPlayerIndex + 1) % joueurs] ?? `Team ${(currentPlayerIndex + 1) % joueurs + 1}`}</p>
+        <IntermissionCard>
+          <h2 className="text-xl font-semibold mb-2">Équipes suivante</h2>
+          <p className="mb-4 text-sm text-zinc-700 dark:text-zinc-300">{teamNames[(currentPlayerIndex + 1) % joueurs] ?? `Équipe ${(currentPlayerIndex + 1) % joueurs + 1}`}</p>
             <div className="flex gap-2 justify-end">
               <button
                 className="rounded-md border border-zinc-200 dark:border-zinc-700 px-3 py-2 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800"
                 onClick={() => {
-                  // advance player and restart timer
                   setCurrentPlayerIndex((p) => (p + 1) % joueurs)
                   setRemaining(duration)
                   setIsRunning(true)
                   setShowIntermission(false)
                 }}
               >
-                Start turn
+                Démarrer le tour
               </button>
             </div>
-          </div>
-        </div>
+          </IntermissionCard>
       )}
 
       {/* Scoreboard */}
