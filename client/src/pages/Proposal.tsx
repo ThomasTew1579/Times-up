@@ -1,31 +1,18 @@
 import { useMemo, useState } from "react";
+import FormCard from "../components/FormCard";
 
 type Item = {
-  author: string;        // autheur de la proposition
-  category: string;        // catégorie du perso
-  name: string;        // nom
-  description: string; // description
-  startDate: string;   // date début
-  endDate: string;     // date fin
+  author: string;
+  category: string;
+  name: string;
+  description: string; 
+  startDate: number | null;
+  endDate: number | null;
 };
 
-const OBJECT_TYPES = [
-  "artiste",
-  "objet",
-  "personnage historique",
-  "personnage fictif",
-  "animeaux",
-  "jeu vidéo",
-  "livre",
-  "musique",
-  "série",
-  "autre"
-];
 
 const subject: string = "Proposition d'ajout de personnage"
-const isAdmin: boolean = false;
-
-
+const isAdmin: boolean = true;
 
 function buildMailto({ to = "", subject = "", body = "" }) {
     const enc = (s: string) => encodeURIComponent(s).replace(/%0A/g, "%0D%0A");
@@ -36,19 +23,20 @@ function buildMailto({ to = "", subject = "", body = "" }) {
 export default function CharacterJsonMailer() {
   const [author, setAuthor] = useState("");
   const [items, setItems] = useState<Item[]>([
-    { author: "", category: "artiste", name: "", description: "", startDate: "", endDate: "" },
+    { author: "", category: "artiste", name: "", description: "", startDate: 0, endDate: 0 },
   ]);
   const to: string = "pasquet.thomas69+timesup-proposals@gmail.com"; 
 
 
   const addItem = () =>
-    setItems((prev) => [...prev, { author: "", category: "artiste", name: "", description: "", startDate: "", endDate: "" }]);
+    setItems((prev) => [...prev, { author: "", category: "artiste", name: "", description: "", startDate: 0, endDate: 0 }]);
 
   const removeItem = (index: number) =>
     setItems((prev) => prev.filter((_, i) => i !== index));
 
-  const updateItem = <K extends keyof Item>(index: number, key: K, value: Item[K]) =>
-    setItems((prev) => prev.map((it, i) => (i === index ? { ...it, [key]: value } : it)));
+  const updateItem = (i: number, patch: Partial<Item>) => {
+    setItems(prev => prev.map((it, idx) => idx === i ? { ...it, ...patch } : it));
+  };
 
   const payload = useMemo(() => {
     return JSON.stringify(
@@ -60,7 +48,7 @@ export default function CharacterJsonMailer() {
           cat: it.category ? it.category : "",
           nom: it.name.trim(),
           description: it.description.trim(),
-          date: (it.startDate ? it.startDate : "") + (it.startDate && it.endDate ?  " - " + it.endDate : "") ,
+          date: (it.startDate !== 0 ? String(it.startDate) : "") + (it.startDate !== 0 && it.endDate ?  " - " + String(it.endDate) : "") ,
         })),
       },
       null,
@@ -98,6 +86,7 @@ export default function CharacterJsonMailer() {
         />
         </div>
 
+
       <div className="space-y-6">
         {items.map((it, i) => (
           <div key={i} className="rounded-2xl border border-zinc-200 p-4 shadow-sm">
@@ -118,66 +107,11 @@ export default function CharacterJsonMailer() {
                 )
               }
             
+            <FormCard 
+              item={it}
+              onChange={(patch) => updateItem(i, patch)}
+            />
 
-            <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-4">
-
-              <div>
-                <label className="block text-sm text-white font-medium mb-1">Nom</label>
-                <input
-                  type="text"
-                  value={it.name}
-                  onChange={(e) => updateItem(i, "name", e.target.value)}
-                  placeholder="Nom de l’élément"
-                  className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm text-white font-medium mb-1">Catégorie</label>
-                <select
-                  value={it.category}
-                  onChange={(e) => updateItem(i, "category", e.target.value)}
-                  className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  {OBJECT_TYPES.map((opt) => (
-                    <option key={opt} value={opt}>{opt}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="md:col-span-2">
-                <label className="block text-sm text-white font-medium mb-1">Description</label>
-                <textarea
-                  value={it.description}
-                  onChange={(e) => updateItem(i, "description", e.target.value)}
-                  rows={3}
-                  placeholder="Décris brièvement l’élément…"
-                  className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm text-white font-medium mb-1">Date</label>
-                <input
-                  type="number"
-                  step="any" 
-                  placeholder="1934"
-                  value={it.startDate}
-                  onChange={(e) => updateItem(i, "startDate", e.target.value)}
-                  className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <input
-                  type="number"
-                  step="1" 
-                  placeholder="2014"
-                  value={it.endDate}
-                  onChange={(e) => updateItem(i, "endDate", e.target.value)}
-                  className="w-full rounded-lg border border-zinc-300 bg-white mt-6 px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-            </div>
           </div>
         ))}
       </div>
