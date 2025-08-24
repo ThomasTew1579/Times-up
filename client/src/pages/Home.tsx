@@ -8,6 +8,9 @@ function Home() {
         <GameCard href="/game/classic/setup" >
           <h2 className="text-5xl text-stroke font-primary">Classique</h2>
         </GameCard>
+        <GameCard href="/game/chill/setup" >
+          <h2 className="text-5xl text-stroke font-primary">Chill</h2>
+        </GameCard>
       </div>
     </main>
   )

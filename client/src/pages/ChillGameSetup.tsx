@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import IntermissionCard from '../components/IntermissionCard'
 
-function ClassicGameSetup() {
+function ChillGameSetup() {
   const navigate = useNavigate()
-  const [duree, setDuree] = useState<number>(20)
-  const [teams, setTeams] = useState<number>(4)
+  // const [duree, setDuree] = useState<number>(20)
+  const [teams, setTeams] = useState<number>(2)
   const [teamNames, setTeamNames] = useState<string[]>(['Équipes 1','Équipes 2','Équipes 3','Équipes 4'])
-  const [nbCartes, setNbCartes] = useState<number>(40)
+  const [nbCartes, setNbCartes] = useState<number>(60)
   const [showIntermission, setShowIntermission] = useState<boolean>(false)
 
   useEffect(() => {
@@ -21,14 +21,14 @@ function ClassicGameSetup() {
   function onSubmit(e: React.FormEvent) {
     e.preventDefault()
     const namesParam = encodeURIComponent(teamNames.join('|'))
-    navigate(`/game/classic?duree=${duree}&teams=${teams}&nbCartes=${nbCartes}&teamNames=${namesParam}`)
+    navigate(`/game/chill?&teams=${teams}&nbCartes=${nbCartes}&teamNames=${namesParam}`)
   }
 
   return (
     <main className="mx-auto container max-w-xl px-4 py-8">
-      <h1 className="text-3xl font-bold font-secondary text-center text-white mb-6">Mode classique - Configuration</h1>
+      <h1 className="text-3xl font-bold font-secondary text-center text-white mb-6">Mode chill - Configuration</h1>
       <form onSubmit={onSubmit} className="space-y-6">
-        <div className="space-y-2">
+        {/* <div className="space-y-2">
           <label htmlFor="duree" className="block text-sm font-medium text-white font-primary">Durée du tour</label>
           <select
             id="duree"
@@ -41,7 +41,7 @@ function ClassicGameSetup() {
             <option value={30}>30 secondes</option>
             <option value={60}>60 secondes</option>
           </select>
-        </div>
+        </div> */}
 
         <div className="space-y-2">
           <label htmlFor="teams" className="block text-sm font-medium text-white font-primary">Nombre d'équipes</label>
@@ -114,6 +114,6 @@ function ClassicGameSetup() {
   )
 }
 
-export default ClassicGameSetup
+export default ChillGameSetup
 
 
