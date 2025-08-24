@@ -12,7 +12,7 @@ type Item = {
 
 
 const subject: string = "Proposition d'ajout de personnage"
-const isAdmin: boolean = true;
+const isAdmin: boolean = false;
 
 function buildMailto({ to = "", subject = "", body = "" }) {
     const enc = (s: string) => encodeURIComponent(s).replace(/%0A/g, "%0D%0A");
