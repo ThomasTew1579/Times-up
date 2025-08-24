@@ -23,6 +23,8 @@ const OBJECT_TYPES = [
 ];
 
 const subject: string = "Proposition d'ajout de personnage"
+const isAdmin: boolean = false;
+
 
 
 function buildMailto({ to = "", subject = "", body = "" }) {
@@ -32,11 +34,12 @@ function buildMailto({ to = "", subject = "", body = "" }) {
   }
 
 export default function CharacterJsonMailer() {
-  const [author, setAuthor] = useState("Votre nom ou pseudo");
+  const [author, setAuthor] = useState("");
   const [items, setItems] = useState<Item[]>([
     { author: "", category: "artiste", name: "", description: "", startDate: "", endDate: "" },
   ]);
   const to: string = "pasquet.thomas69+timesup-proposals@gmail.com"; 
+
 
   const addItem = () =>
     setItems((prev) => [...prev, { author: "", category: "artiste", name: "", description: "", startDate: "", endDate: "" }]);
@@ -54,8 +57,8 @@ export default function CharacterJsonMailer() {
         author,
         createdAt: new Date().toISOString(),
         items: items.map((it) => ({
-          category: it.category ? it.category : "",
-          name: it.name.trim(),
+          cat: it.category ? it.category : "",
+          nom: it.name.trim(),
           description: it.description.trim(),
           date: (it.startDate ? it.startDate : "") + (it.startDate && it.endDate ?  " - " + it.endDate : "") ,
         })),
@@ -66,7 +69,7 @@ export default function CharacterJsonMailer() {
   }, [author, items]);
 
   const mailtoHref = useMemo(
-    () => buildMailto({ to, subject, body: payload }), // payload = ton JSON pretty
+    () => buildMailto({ to, subject, body: payload }), 
     [to, subject, payload]
   );
   const tooLong = mailtoHref.length > 1800;
@@ -81,16 +84,16 @@ export default function CharacterJsonMailer() {
   };
 
   return (
-    <div className="mx-auto max-w-3xl p-6">
-      <h1 className="text-2xl font-semibold mb-4">Ajouts d’éléments au JSON du personnage</h1>
+    <div className="mx-auto max-w-3xl p-6 ">
+      <h1 className="text-2xl font-semibold font-secondary text-white text-center mb-4">Propose tes propres cartes à jouer !</h1>
 
-      <div>
-        <label className="block text-sm font-medium mb-1">Nom</label>
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-white mb-1">Nom</label>
         <input
             type="text"
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
-            placeholder="Nom de l’élément"
+            placeholder="Votre nom ou pseudo"
             className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
         />
         </div>
@@ -98,10 +101,10 @@ export default function CharacterJsonMailer() {
       <div className="space-y-6">
         {items.map((it, i) => (
           <div key={i} className="rounded-2xl border border-zinc-200 p-4 shadow-sm">
-            <div className="flex items-start justify-between">
-              <h2 className="font-medium">Élément #{i + 1}</h2>
               {
-                items.length !== 1 && ( 
+                  items.length !== 1 && ( 
+                      <div className="flex items-start justify-between">
+                <h2 className="font-medium">Carte No{i + 1}</h2>
                 <button
                         type="button"
                         onClick={() => removeItem(i)}
@@ -111,14 +114,26 @@ export default function CharacterJsonMailer() {
                     >
                     Supprimer
               </button>
+            </div>
                 )
               }
             
-            </div>
 
             <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-4">
+
               <div>
-                <label className="block text-sm font-medium mb-1">Objet</label>
+                <label className="block text-sm text-white font-medium mb-1">Nom</label>
+                <input
+                  type="text"
+                  value={it.name}
+                  onChange={(e) => updateItem(i, "name", e.target.value)}
+                  placeholder="Nom de l’élément"
+                  className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm text-white font-medium mb-1">Catégorie</label>
                 <select
                   value={it.category}
                   onChange={(e) => updateItem(i, "category", e.target.value)}
@@ -130,19 +145,8 @@ export default function CharacterJsonMailer() {
                 </select>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium mb-1">Nom</label>
-                <input
-                  type="text"
-                  value={it.name}
-                  onChange={(e) => updateItem(i, "name", e.target.value)}
-                  placeholder="Nom de l’élément"
-                  className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium mb-1">Description</label>
+                <label className="block text-sm text-white font-medium mb-1">Description</label>
                 <textarea
                   value={it.description}
                   onChange={(e) => updateItem(i, "description", e.target.value)}
@@ -153,7 +157,7 @@ export default function CharacterJsonMailer() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Date</label>
+                <label className="block text-sm text-white font-medium mb-1">Date</label>
                 <input
                   type="date"
                   value={it.startDate}
@@ -178,20 +182,21 @@ export default function CharacterJsonMailer() {
         <button
           type="button"
           onClick={addItem}
-          className="rounded-xl border px-4 py-2 hover:bg-zinc-50"
+          className="rounded-xl border px-4 py-2  text-white border-white hover:bg-primary-500"
         >
           + Ajouter un élément
         </button>
       </div>
 
-      {/* Aperçu & actions d’envoi */}
       <div className="mt-6">
-        <details className="rounded-2xl border border-zinc-200 p-4">
-          <summary className="cursor-pointer select-none font-medium">Aperçu du JSON</summary>
-          <pre className="mt-3 overflow-x-auto whitespace-pre-wrap rounded-xl bg-zinc-50 p-3 text-sm">
-{payload}
-          </pre>
-        </details>
+        {isAdmin && (
+            <details className="rounded-2xl border border-zinc-200 p-4">
+            <summary className="cursor-pointer  text-white select-none font-medium">Aperçu du JSON</summary>
+            <pre className="mt-3 overflow-x-auto whitespace-pre-wrap rounded-xl bg-zinc-50 p-3 text-sm">
+                {payload}
+            </pre>
+            </details>
+        )}
 
         {tooLong && (
           <p className="mt-3 text-amber-700">
@@ -202,14 +207,14 @@ export default function CharacterJsonMailer() {
         <div className="mt-4 flex flex-wrap gap-3">
           <a
             href={mailtoHref}
-            className="rounded-xl border px-4 py-2 hover:bg-zinc-50"
+            className="rounded-xl text-white border px-4 py-2 hover:bg-zinc-50"
           >
-            Ouvrir le client mail (mailto:)
+            Envoyer !
           </a>
           <button
             type="button"
             onClick={copyJson}
-            className="rounded-xl border px-4 py-2 hover:bg-zinc-50"
+            className="rounded-xl text-white border px-4 py-2 hover:bg-zinc-50"
           >
             Copier le JSON
           </button>
