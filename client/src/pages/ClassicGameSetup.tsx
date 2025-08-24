@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import IntermissionCard from '../components/IntermissionCard'
+import ClassicRules from '../components/ClassicRules'
 
 function ClassicGameSetup() {
   const navigate = useNavigate()
-  const [duree, setDuree] = useState<number>(20)
+  const [duree, setDuree] = useState<number>(30)
   const [teams, setTeams] = useState<number>(4)
   const [teamNames, setTeamNames] = useState<string[]>(['Équipes 1','Équipes 2','Équipes 3','Équipes 4'])
   const [nbCartes, setNbCartes] = useState<number>(40)
@@ -27,6 +28,12 @@ function ClassicGameSetup() {
   return (
     <main className="mx-auto container max-w-xl px-4 py-8">
       <h1 className="text-3xl font-bold font-secondary text-center text-white mb-6">Mode classique - Configuration</h1>
+
+      <details className="rounded-2xl border mb-4 border-zinc-200 p-2 md:p-4">
+          <summary className="cursor-pointer  text-white select-none font-medium">Règle deu jeu</summary>
+          <ClassicRules />
+      </details>
+
       <form onSubmit={onSubmit} className="space-y-6">
         <div className="space-y-2">
           <label htmlFor="duree" className="block text-sm font-medium text-white font-primary">Durée du tour</label>
