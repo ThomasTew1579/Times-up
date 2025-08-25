@@ -19,7 +19,7 @@ function shuffle<T>(array: T[]): T[] {
   return a
 }
 
-function JeuClassique() {
+function ClassicGame() {
   const cartesMemo: Carte[] = useMemo(() => cartes as Carte[], [])
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
@@ -374,6 +374,6 @@ function JeuClassique() {
   )
 }
 
-export default JeuClassique
+export default ClassicGame
 
 
