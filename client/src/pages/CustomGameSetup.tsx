@@ -7,12 +7,12 @@ const CONTAINER_KEY = "timesup:submissions";
 export default function CustomGameSetup() {
 
     const navigate = useNavigate()
-    const [duree, setDuree] = useState<number>(30)
+    const [duration, setDuration] = useState<number>(30)
     const [players, setPlayers] = useState<number>(4)
-    const [teamNames, setTeamNames] = useState<string[]>(['Joueur 1','Joueur 2'])
+    const [playerNames, setPlayerNames] = useState<string[]>(['Joueur 1','Joueur 2'])
   
     useEffect(() => {
-      setTeamNames((prev) => {
+      setPlayerNames((prev) => {
         const next = prev.slice(0, players)
         while (next.length < players) next.push(`Joueur ${next.length + 1}`)
         return next
@@ -21,11 +21,11 @@ export default function CustomGameSetup() {
   
     function onSubmit(e: React.FormEvent) {
       e.preventDefault()
-      const namesParam = encodeURIComponent(teamNames.join('|'))
+      const namesParam = encodeURIComponent(playerNames.join('|'))
       try {
         localStorage.removeItem(CONTAINER_KEY);
       } catch {}
-      navigate(`/game/custom/cards/setup?duree=${duree}&players=${players}&teamNames=${namesParam}`)
+      navigate(`/game/custom/cards/setup?duration=${duration}&players=${players}&playerNames=${namesParam}`)
     }
   
     return (
@@ -36,9 +36,9 @@ export default function CustomGameSetup() {
           <div className="space-y-2">
             <label htmlFor="duree" className="block text-sm font-medium text-white font-primary">Durée du tour</label>
             <select
-              id="duree"
-              value={duree}
-              onChange={(e) => setDuree(Number(e.target.value))}
+              id="duration"
+              value={duration}
+              onChange={(e) => setDuration(Number(e.target.value))}
               className="w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-primary-900 dark:text-white px-3 py-2 text-sm"
             >
               <option value={10}>10 secondes</option>
@@ -65,12 +65,12 @@ export default function CustomGameSetup() {
           <div className="space-y-2">
             <label className="block text-sm font-medium text-white font-primary">Noms des joueurs</label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              {teamNames.map((name, idx) => (
+              {playerNames.map((name, idx) => (
                 <input
                   key={idx}
                   type="text"
                   value={name}
-                  onChange={(e) => setTeamNames((arr) => arr.map((n, i) => (i === idx ? e.target.value : n)))}
+                  onChange={(e) => setPlayerNames((arr) => arr.map((n, i) => (i === idx ? e.target.value : n)))}
                   className="w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-primary-900 dark:text-white px-3 py-2 text-sm"
                   placeholder={`Team ${idx + 1}`}
                 />

@@ -7,7 +7,7 @@ type GameCardProps = {
   href?: string
 }
 
-function GameCard({children, href}: GameCardProps): any {
+function GameCard({children, href}: GameCardProps) {
     const [displayCard, setDisplayCard] = useState(true);
 
     function handleClickCard() {
@@ -39,7 +39,7 @@ function GameCard({children, href}: GameCardProps): any {
         return (
         <div 
             onClick={handleClickCard}
-            className={displayCard ? classDisplay: classDisplayOff}>
+            className={displayCard ? classDisplay : classDisplayOff}>
                 <div className="flex h-full flex-col gap-12 justify-center items-center p-4 bg-spirale bg-secondary-500 outline-primary-900 rounded-xl overflow-clip relative">
                     <div className="content flex flex-col h-auto gap-12 justify-cente z-20">
                         {children} 

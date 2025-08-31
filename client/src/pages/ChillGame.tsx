@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import cartes from '../assets/liste_cartes.json'
+import cards from '../assets/cards_list.json'
 import GameCard from '../components/GameCard'
 import IntermissionCard from '../components/IntermissionCard'
 
-type Carte = {
-  nom: string
+type Cards = {
+  name: string
   description?: string
   date?: string
 }
@@ -20,30 +20,30 @@ function shuffle<T>(array: T[]): T[] {
 }
 
 function ChillGame() {
-  const cartesMemo: Carte[] = useMemo(() => cartes as Carte[], [])
+  const cardsMemo: Cards[] = useMemo(() => cards as Cards[], [])
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const [showIntermission, setShowIntermission] = useState(false)
   const [showEndgame, setShowEndgame] = useState(false)
   const deckIndices = useMemo(() => {
-    const total = cartesMemo.length
+    const total = cardsMemo.length
     const requested = Number(searchParams.get('nbCartes'))
     const target = !Number.isNaN(requested) && requested > 0 ? Math.min(requested, total) : total
     const equitable = Math.floor(target / Math.max(2)) * Math.max(2)
     const indices = Array.from({ length: total }, (_, i) => i)
     const shuffled = shuffle(indices)
     return shuffled.slice(0, equitable > 0 ? equitable : Math.max(2))
-  }, [cartesMemo, searchParams])
+  }, [cardsMemo, searchParams])
   const [pendingIndices, setPendingIndices] = useState<number[]>([])
 
   useEffect(() => {
     setPendingIndices(deckIndices)
   }, [searchParams, deckIndices])
 
-  const carte = pendingIndices.length > 0 ? cartesMemo[pendingIndices[0]] : undefined
-  const totalCartes = deckIndices.length
-  const validatedCount = totalCartes - pendingIndices.length + 1;
-  const avancee = `${validatedCount}/${totalCartes || '?'}`
+  const card = pendingIndices.length > 0 ? cardsMemo[pendingIndices[0]] : undefined
+  const totalCards = deckIndices.length
+  const validatedCount = totalCards - pendingIndices.length + 1;
+  const avancee = `${validatedCount}/${totalCards || '?'}`
 
   function handleValidate() {
     setPendingIndices((arr) => arr.length > 0 ? arr.slice(1) : arr)
@@ -64,22 +64,22 @@ function ChillGame() {
       </section>
 
       <section className="mb-6 flex justify-center">
-        {carte ? (
+        {card ? (
           <>
             <GameCard>
-              <div className="text-2xl text-primary-900 text-center font-primary">{carte.nom}</div>
+              <div className="text-2xl text-primary-900 text-center font-primary">{card.name}</div>
               <div className="desc text-xs">
-                {carte.description && (
-                  <p className="text-white text-center">{carte.description}</p>
+                {card.description && (
+                  <p className="text-white text-center">{card.description}</p>
                 )}
-                {carte.date && (
-                  <p className=" text-white text-center">{carte.date}</p>
+                {card.date && (
+                  <p className=" text-white text-center">{card.date}</p>
                 )}
               </div>
             </GameCard>
           </>
         ) : (
-          <div className="text-zinc-600 dark:text-zinc-300">No card available.</div>
+          <div className="text-zinc-600 dark:text-zinc-300">Aucune carte disponible.</div>
         )}
       </section>
 
@@ -87,7 +87,7 @@ function ChillGame() {
         <button
           className="rounded-md bg-emerald-600 text-white px-3 py-2 text-sm font-medium hover:bg-emerald-700 active:bg-emerald-800 focus-visible:outlinez focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
           onClick={handleValidate}
-          disabled={!carte}
+          disabled={!card}
         >
           Valider
         </button>

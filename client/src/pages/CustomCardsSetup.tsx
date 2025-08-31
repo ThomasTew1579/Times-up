@@ -9,8 +9,8 @@ import IntermissionCard from "../components/IntermissionCard";
   };
   
   type PlayerSubmission = {
-    team: string; 
-    items: Array<{ nom: string; description: string; date?: string }>;
+    playerName: string; 
+    items: Array<{ name: string; description: string; date?: string }>;
   };
   
   type Container = {
@@ -37,9 +37,9 @@ import IntermissionCard from "../components/IntermissionCard";
 function CustomCardsSetup () {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams();
-  const [joueurs, setJoueurs] = useState(4);
+  const [player, setJoueurs] = useState(4);
   const [currentPlayerIndex] = useState(0);
-  const [teamNames, setTeamNames] = useState<string[]>([]);
+  const [playerNames, setPlayerNames] = useState<string[]>([]);
   const [shownCardsCreator, setShownCardsCreator] = useState(true);
   const [showIntermissionCreator, setShowIntermissionCreator] = useState(true);
   const [currentPlayerCreat, setCurrentPlayerCreat] = useState(currentPlayerIndex);
@@ -50,19 +50,19 @@ function CustomCardsSetup () {
     if (!Number.isNaN(j) && j >= 2 && j <= 10) {
       setJoueurs(j);
     }
-    const namesParam = searchParams.get("teamNames");
+    const namesParam = searchParams.get("playerNames");
     if (namesParam) {
       const names = decodeURIComponent(namesParam)
         .split("|")
-        .slice(0, Math.max(2, j || joueurs));
-      setTeamNames(
+        .slice(0, Math.max(2, j || player));
+      setPlayerNames(
         names.length
           ? names
-          : Array.from({ length: Math.max(2, j || joueurs) }, (_, i) => `Team ${i + 1}`)
+          : Array.from({ length: Math.max(2, j || player) }, (_, i) => `Team ${i + 1}`)
       );
     } else {
-      setTeamNames(
-        Array.from({ length: Math.max(2, j || joueurs) }, (_, i) => `Team ${i + 1}`)
+      setPlayerNames(
+        Array.from({ length: Math.max(2, j || player) }, (_, i) => `Team ${i + 1}`)
       );
     }
 
@@ -95,17 +95,17 @@ function CustomCardsSetup () {
   };
 
   const currentSubmissionObj: PlayerSubmission = useMemo(() => {
-    const team =
-      teamNames[currentPlayerCreat % joueurs] ??
-      `Équipe ${(currentPlayerCreat % joueurs) + 1}`;
+    const playerName =
+      playerNames[currentPlayerCreat % player] ??
+      `Équipe ${(currentPlayerCreat % player) + 1}`;
 
     const cleaned = items.map((it) => ({
-      nom: (it.name ?? "").trim(),
+      name: (it.name ?? "").trim(),
       description: (it.description ?? "").trim(),
     }));
 
-    return { team, items: cleaned };
-  }, [items, teamNames, currentPlayerCreat, joueurs]);
+    return { playerName , items: cleaned };
+  }, [items, playerNames, currentPlayerCreat, player]);
 
   const allCardsValid =
     items.length >= CARDS_PER_PLAYER && items.every(isItemValid);
@@ -129,17 +129,17 @@ function CustomCardsSetup () {
     }));
   
     const everyoneDone =
-      nextSubmissions.length >= joueurs &&
+      nextSubmissions.length >= player &&
       nextSubmissions.every(s =>
         s.items.length >= CARDS_PER_PLAYER &&
-        s.items.every(c => c.nom.trim() && c.description.trim())
+        s.items.every(c => c.name.trim() && c.description.trim())
       );
   
     if (everyoneDone) {
-      const duree = searchParams.get('duree');
+      const duration = searchParams.get('duration');
       const players = searchParams.get('players');
-      const teamNames = searchParams.get('teamNames');
-      navigate(`/game/custom?duree=${duree}&players=${players}&teamNames=${teamNames}`)
+      const playerNames = searchParams.get('playerNames');
+      navigate(`/game/custom?duration=${duration}&players=${players}&playerNames=${playerNames}`)
       return; 
     }
   
@@ -175,8 +175,8 @@ function CustomCardsSetup () {
           <div className="w-full rounded-lg max-h-dvh overflow-auto  ">
           <h1 className="text-3xl font-bold font-secondary text-center text-white mb-6">Mode custom - Création des cartes</h1>
             <p className="mb-4 text-sm text-zinc-700 dark:text-zinc-300">
-              {teamNames[currentPlayerCreat % joueurs] ??
-                `Équipe ${(currentPlayerCreat % joueurs) + 1}`}
+              {playerNames[currentPlayerCreat % player] ??
+                `Équipe ${(currentPlayerCreat % player) + 1}`}
             </p>
 
             <div className="space-y-6">
@@ -271,8 +271,8 @@ function CustomCardsSetup () {
         <IntermissionCard>
           <h2 className="text-xl font-semibold mb-2">Équipe suivante</h2>
           <p className="mb-4 text-sm text-zinc-700 dark:text-zinc-300">
-            {teamNames[currentPlayerCreat % joueurs] ??
-              `Équipe ${(currentPlayerCreat % joueurs) + 1}`}
+            {playerNames[currentPlayerCreat % player] ??
+              `Équipe ${(currentPlayerCreat % player) + 1}`}
           </p>
           <div className="flex gap-2 justify-end">
             <button

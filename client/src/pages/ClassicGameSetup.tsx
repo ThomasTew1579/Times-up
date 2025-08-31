@@ -5,7 +5,7 @@ import ClassicRules from '../components/ClassicRules'
 
 function ClassicGameSetup() {
   const navigate = useNavigate()
-  const [duree, setDuree] = useState<number>(30)
+  const [duration, setDuration] = useState<number>(30)
   const [teams, setTeams] = useState<number>(4)
   const [teamNames, setTeamNames] = useState<string[]>(['Équipes 1','Équipes 2','Équipes 3','Équipes 4'])
   const [nbCartes, setNbCartes] = useState<number>(40)
@@ -22,7 +22,7 @@ function ClassicGameSetup() {
   function onSubmit(e: React.FormEvent) {
     e.preventDefault()
     const namesParam = encodeURIComponent(teamNames.join('|'))
-    navigate(`/game/classic?duree=${duree}&teams=${teams}&nbCartes=${nbCartes}&teamNames=${namesParam}`)
+    navigate(`/game/classic?duration=${duration}&teams=${teams}&nbCartes=${nbCartes}&teamNames=${namesParam}`)
   }
 
   return (
@@ -36,11 +36,11 @@ function ClassicGameSetup() {
 
       <form onSubmit={onSubmit} className="space-y-6">
         <div className="space-y-2">
-          <label htmlFor="duree" className="block text-sm font-medium text-white font-primary">Durée du tour</label>
+          <label htmlFor="duration" className="block text-sm font-medium text-white font-primary">Durée du tour</label>
           <select
-            id="duree"
-            value={duree}
-            onChange={(e) => setDuree(Number(e.target.value))}
+            id="duration"
+            value={duration}
+            onChange={(e) => setDuration(Number(e.target.value))}
             className="w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-primary-900 dark:text-white px-3 py-2 text-sm"
           >
             <option value={10}>10 secondes</option>
