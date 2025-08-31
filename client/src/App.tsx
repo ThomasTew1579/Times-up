@@ -1,18 +1,17 @@
-import { Routes, Route } from 'react-router-dom'
-import Menu from './components/Menu'
-import MenuItem from './components/MenuItem'
-import Home from './pages/Home'
-import ClassicGame from './pages/ClassicGame'
-import ChillGame from './pages/ChillGame'
-import ClassicGameSetup from './pages/ClassicGameSetup'
-import ChillGameSetup from './pages/ChillGameSetup'
-import Proposal from './pages/Proposal'
-import CustomGame from './pages/CustomGame'
-import CustomGameSetup from './pages/CustomGameSetup'
-import CustomCardsSetup from './pages/CustomCardsSetup'
+import { Routes, Route } from 'react-router-dom';
+import Menu from './components/Menu';
+import MenuItem from './components/MenuItem';
+import Home from './pages/Home';
+import ClassicGame from './pages/ClassicGame';
+import ChillGame from './pages/ChillGame';
+import ClassicGameSetup from './pages/ClassicGameSetup';
+import ChillGameSetup from './pages/ChillGameSetup';
+import Proposal from './pages/Proposal';
+import CustomGame from './pages/CustomGame';
+import CustomGameSetup from './pages/CustomGameSetup';
+import CustomCardsSetup from './pages/CustomCardsSetup';
 
 function App() {
-
   return (
     <>
       <Menu>
@@ -31,7 +30,7 @@ function App() {
         <Route path="/proposal" element={<Proposal />} />
       </Routes>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -1,41 +1,39 @@
-import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import FormCard from "../components/FormCard";
-import IntermissionCard from "../components/IntermissionCard";
+import { useEffect, useMemo, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import FormCard from '../components/FormCard';
+import IntermissionCard from '../components/IntermissionCard';
 
-  type Item = {
-    name: string;
-    description: string;
-  };
-  
-  type PlayerSubmission = {
-    playerName: string; 
-    items: Array<{ name: string; description: string; date?: string }>;
-  };
-  
-  type Container = {
-    schemaVersion: 1;
-    sessionId: string;
-    submissions: PlayerSubmission[];
-  };
-  
-  const CONTAINER_KEY = "timesup:submissions";
-  const CARDS_PER_PLAYER = 2;
-  
-  
-  const makeContainer = (): Container => ({
-    schemaVersion: 1,
-    sessionId: (crypto?.randomUUID?.() ?? Math.random().toString(36).slice(2)),
-    submissions: [],
-  });
-  
-  const isNonEmpty = (s: string | undefined) => !!s && s.trim().length > 0;
-  const isItemValid = (it: Item) => isNonEmpty(it.name) && isNonEmpty(it.description);
-  const isAdmin: boolean = false;
+type Item = {
+  name: string;
+  description: string;
+};
 
+type PlayerSubmission = {
+  playerName: string;
+  items: Array<{ name: string; description: string; date?: string }>;
+};
 
-function CustomCardsSetup () {
-  const navigate = useNavigate()
+type Container = {
+  schemaVersion: 1;
+  sessionId: string;
+  submissions: PlayerSubmission[];
+};
+
+const CONTAINER_KEY = 'timesup:submissions';
+const CARDS_PER_PLAYER = 2;
+
+const makeContainer = (): Container => ({
+  schemaVersion: 1,
+  sessionId: crypto?.randomUUID?.() ?? Math.random().toString(36).slice(2),
+  submissions: [],
+});
+
+const isNonEmpty = (s: string | undefined) => !!s && s.trim().length > 0;
+const isItemValid = (it: Item) => isNonEmpty(it.name) && isNonEmpty(it.description);
+const isAdmin: boolean = false;
+
+function CustomCardsSetup() {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [player, setJoueurs] = useState(4);
   const [currentPlayerIndex] = useState(0);
@@ -43,17 +41,17 @@ function CustomCardsSetup () {
   const [shownCardsCreator, setShownCardsCreator] = useState(true);
   const [showIntermissionCreator, setShowIntermissionCreator] = useState(true);
   const [currentPlayerCreat, setCurrentPlayerCreat] = useState(currentPlayerIndex);
-  const [items, setItems] = useState<Item[]>([{ name: "", description: "" }]);
+  const [items, setItems] = useState<Item[]>([{ name: '', description: '' }]);
 
   useEffect(() => {
-    const j = Number(searchParams.get("players"));
+    const j = Number(searchParams.get('players'));
     if (!Number.isNaN(j) && j >= 2 && j <= 10) {
       setJoueurs(j);
     }
-    const namesParam = searchParams.get("playerNames");
+    const namesParam = searchParams.get('playerNames');
     if (namesParam) {
       const names = decodeURIComponent(namesParam)
-        .split("|")
+        .split('|')
         .slice(0, Math.max(2, j || player));
       setPlayerNames(
         names.length
@@ -61,13 +59,10 @@ function CustomCardsSetup () {
           : Array.from({ length: Math.max(2, j || player) }, (_, i) => `Team ${i + 1}`)
       );
     } else {
-      setPlayerNames(
-        Array.from({ length: Math.max(2, j || player) }, (_, i) => `Team ${i + 1}`)
-      );
+      setPlayerNames(Array.from({ length: Math.max(2, j || player) }, (_, i) => `Team ${i + 1}`));
     }
-
   }, [searchParams, player]);
-  
+
   const [container, setContainer] = useState<Container>(() => {
     try {
       const raw = localStorage.getItem(CONTAINER_KEY);
@@ -81,16 +76,13 @@ function CustomCardsSetup () {
     try {
       localStorage.setItem(CONTAINER_KEY, JSON.stringify(container));
     } catch (e) {
-      console.error("Erreur ", e);
+      console.error('Erreur ', e);
     }
   }, [container]);
 
+  const addItem = () => setItems((prev) => [...prev, { name: '', description: '' }]);
 
-  const addItem = () =>
-    setItems((prev) => [...prev, { name: "", description: "" }]);
-
-  const removeItem = (index: number) =>
-    setItems((prev) => prev.filter((_, i) => i !== index));
+  const removeItem = (index: number) => setItems((prev) => prev.filter((_, i) => i !== index));
 
   const updateItem = (i: number, patch: Partial<Item>) => {
     setItems((prev) => prev.map((it, idx) => (idx === i ? { ...it, ...patch } : it)));
@@ -98,19 +90,17 @@ function CustomCardsSetup () {
 
   const currentSubmissionObj: PlayerSubmission = useMemo(() => {
     const playerName =
-      playerNames[currentPlayerCreat % player] ??
-      `Équipe ${(currentPlayerCreat % player) + 1}`;
+      playerNames[currentPlayerCreat % player] ?? `Équipe ${(currentPlayerCreat % player) + 1}`;
 
     const cleaned = items.map((it) => ({
-      name: (it.name ?? "").trim(),
-      description: (it.description ?? "").trim(),
+      name: (it.name ?? '').trim(),
+      description: (it.description ?? '').trim(),
     }));
 
-    return { playerName , items: cleaned };
+    return { playerName, items: cleaned };
   }, [items, playerNames, currentPlayerCreat, player]);
 
-  const allCardsValid =
-    items.length >= CARDS_PER_PLAYER && items.every(isItemValid);
+  const allCardsValid = items.length >= CARDS_PER_PLAYER && items.every(isItemValid);
 
   function nextPlayerCreat() {
     setCurrentPlayerCreat((p) => p + 1);
@@ -120,64 +110,60 @@ function CustomCardsSetup () {
 
   function commitCurrentSubmission() {
     if (!allCardsValid) {
-      alert("Chaque carte doit avoir un nom ET une description.");
+      alert('Chaque carte doit avoir un nom ET une description.');
       return;
     }
     const nextSubmissions = [...container.submissions, currentSubmissionObj];
-  
+
     setContainer((prev) => ({
       ...prev,
       submissions: nextSubmissions,
     }));
-  
+
     const everyoneDone =
       nextSubmissions.length >= player &&
-      nextSubmissions.every(s =>
-        s.items.length >= CARDS_PER_PLAYER &&
-        s.items.every(c => c.name.trim() && c.description.trim())
+      nextSubmissions.every(
+        (s) =>
+          s.items.length >= CARDS_PER_PLAYER &&
+          s.items.every((c) => c.name.trim() && c.description.trim())
       );
-  
+
     if (everyoneDone) {
       const duration = searchParams.get('duration');
       const players = searchParams.get('players');
       const playerNames = searchParams.get('playerNames');
-      navigate(`/game/custom?duration=${duration}&players=${players}&playerNames=${playerNames}`)
-      return; 
+      navigate(`/game/custom?duration=${duration}&players=${players}&playerNames=${playerNames}`);
+      return;
     }
-  
-    setItems([{ name: "", description: "" }]);
+
+    setItems([{ name: '', description: '' }]);
     nextPlayerCreat();
   }
 
   function resetAllSubmissions() {
-    if (confirm("Effacer toutes les propositions enregistrées ?")) {
+    if (confirm('Effacer toutes les propositions enregistrées ?')) {
       setContainer(makeContainer());
-      setItems([{ name: "", description: "" }]);
+      setItems([{ name: '', description: '' }]);
       try {
         localStorage.removeItem(CONTAINER_KEY);
       } catch (e) {
-        console.error("Erreur ", e);
+        console.error('Erreur ', e);
       }
     }
   }
 
-  const finalCards = useMemo(
-    () => container.submissions.flatMap((s) => s.items),
-    [container]
-  );
+  const finalCards = useMemo(() => container.submissions.flatMap((s) => s.items), [container]);
 
-  const finalJsonText = useMemo(
-    () => JSON.stringify(finalCards, null, 2),
-    [finalCards]
-  );
+  const finalJsonText = useMemo(() => JSON.stringify(finalCards, null, 2), [finalCards]);
 
-    return (
-        <div>
-
+  return (
+    <div>
       {shownCardsCreator && (
         <div className=" flex items-center justify-center py-8 ">
           <div className="w-full rounded-lg max-h-dvh overflow-auto  ">
-          <h1 className="text-3xl font-bold font-secondary text-center text-white mb-6">Mode custom - Création des cartes</h1>
+            <h1 className="text-3xl font-bold font-secondary text-center text-white mb-6">
+              Mode custom - Création des cartes
+            </h1>
             <p className="mb-4 text-sm text-zinc-700 dark:text-zinc-300">
               {playerNames[currentPlayerCreat % player] ??
                 `Équipe ${(currentPlayerCreat % player) + 1}`}
@@ -194,7 +180,7 @@ function CustomCardsSetup () {
                         onClick={() => removeItem(i)}
                         className="text-sm rounded-lg border px-2 py-1 text-white border-white"
                         disabled={items.length === 1}
-                        title={items.length === 1 ? "Au moins un élément requis" : "Supprimer"}
+                        title={items.length === 1 ? 'Au moins un élément requis' : 'Supprimer'}
                       >
                         Supprimer
                       </button>
@@ -220,7 +206,7 @@ function CustomCardsSetup () {
               <div className="mt-4 flex gap-3 items-center">
                 {!allCardsValid && (
                   <p className="text-sm text-amber-300">
-                    Chaque carte doit avoir un <strong>nom</strong> et une{" "}
+                    Chaque carte doit avoir un <strong>nom</strong> et une{' '}
                     <strong>description</strong>.
                   </p>
                 )}
@@ -252,7 +238,7 @@ function CustomCardsSetup () {
                   className="rounded-md border border-zinc-200 dark:border-zinc-700 px-3 py-2 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800"
                   onClick={async () => {
                     await navigator.clipboard.writeText(finalJsonText);
-                    alert("JSON final copié !");
+                    alert('JSON final copié !');
                   }}
                 >
                   Copier le JSON final
@@ -266,7 +252,6 @@ function CustomCardsSetup () {
                 </button>
               </div>
             )}
-          
           </div>
         </div>
       )}
@@ -291,8 +276,8 @@ function CustomCardsSetup () {
           </div>
         </IntermissionCard>
       )}
-        </div>
-    )
+    </div>
+  );
 }
 
 export default CustomCardsSetup;

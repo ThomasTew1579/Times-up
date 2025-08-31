@@ -1,42 +1,55 @@
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import IntermissionCard from '../components/IntermissionCard'
-import ClassicRules from '../components/ClassicRules'
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import IntermissionCard from '../components/IntermissionCard';
+import ClassicRules from '../components/ClassicRules';
 
 function ClassicGameSetup() {
-  const navigate = useNavigate()
-  const [duration, setDuration] = useState<number>(30)
-  const [teams, setTeams] = useState<number>(4)
-  const [teamNames, setTeamNames] = useState<string[]>(['Équipes 1','Équipes 2','Équipes 3','Équipes 4'])
-  const [nbCartes, setNbCartes] = useState<number>(40)
-  const [showIntermission, setShowIntermission] = useState<boolean>(false)
+  const navigate = useNavigate();
+  const [duration, setDuration] = useState<number>(30);
+  const [teams, setTeams] = useState<number>(4);
+  const [teamNames, setTeamNames] = useState<string[]>([
+    'Équipes 1',
+    'Équipes 2',
+    'Équipes 3',
+    'Équipes 4',
+  ]);
+  const [nbCartes, setNbCartes] = useState<number>(40);
+  const [showIntermission, setShowIntermission] = useState<boolean>(false);
 
   useEffect(() => {
     setTeamNames((prev) => {
-      const next = prev.slice(0, teams)
-      while (next.length < teams) next.push(`Équipes ${next.length + 1}`)
-      return next
-    })
-  }, [teams])
+      const next = prev.slice(0, teams);
+      while (next.length < teams) next.push(`Équipes ${next.length + 1}`);
+      return next;
+    });
+  }, [teams]);
 
   function onSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    const namesParam = encodeURIComponent(teamNames.join('|'))
-    navigate(`/game/classic?duration=${duration}&teams=${teams}&nbCartes=${nbCartes}&teamNames=${namesParam}`)
+    e.preventDefault();
+    const namesParam = encodeURIComponent(teamNames.join('|'));
+    navigate(
+      `/game/classic?duration=${duration}&teams=${teams}&nbCartes=${nbCartes}&teamNames=${namesParam}`
+    );
   }
 
   return (
     <main className="mx-auto container max-w-xl px-4 py-8">
-      <h1 className="text-3xl font-bold font-secondary text-center text-white mb-6">Mode classique - Configuration</h1>
+      <h1 className="text-3xl font-bold font-secondary text-center text-white mb-6">
+        Mode classique - Configuration
+      </h1>
 
       <details className="rounded-2xl border mb-4 border-zinc-200 p-2 md:p-4">
-          <summary className="cursor-pointer  text-white select-none font-medium">Règle deu jeu</summary>
-          <ClassicRules />
+        <summary className="cursor-pointer  text-white select-none font-medium">
+          Règle deu jeu
+        </summary>
+        <ClassicRules />
       </details>
 
       <form onSubmit={onSubmit} className="space-y-6">
         <div className="space-y-2">
-          <label htmlFor="duration" className="block text-sm font-medium text-white font-primary">Durée du tour</label>
+          <label htmlFor="duration" className="block text-sm font-medium text-white font-primary">
+            Durée du tour
+          </label>
           <select
             id="duration"
             value={duration}
@@ -51,7 +64,9 @@ function ClassicGameSetup() {
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="teams" className="block text-sm font-medium text-white font-primary">Nombre d'équipes</label>
+          <label htmlFor="teams" className="block text-sm font-medium text-white font-primary">
+            Nombre d'équipes
+          </label>
           <input
             id="teams"
             type="range"
@@ -65,14 +80,18 @@ function ClassicGameSetup() {
         </div>
 
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-white font-primary">Noms des équipes</label>
+          <label className="block text-sm font-medium text-white font-primary">
+            Noms des équipes
+          </label>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {teamNames.map((name, idx) => (
               <input
                 key={idx}
                 type="text"
                 value={name}
-                onChange={(e) => setTeamNames((arr) => arr.map((n, i) => (i === idx ? e.target.value : n)))}
+                onChange={(e) =>
+                  setTeamNames((arr) => arr.map((n, i) => (i === idx ? e.target.value : n)))
+                }
                 className="w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-primary-900 dark:text-white px-3 py-2 text-sm"
                 placeholder={`Team ${idx + 1}`}
               />
@@ -81,7 +100,9 @@ function ClassicGameSetup() {
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="nbCartes" className="block text-sm font-medium text-white font-primary">Nombre de cartes</label>
+          <label htmlFor="nbCartes" className="block text-sm font-medium text-white font-primary">
+            Nombre de cartes
+          </label>
           <input
             id="nbCartes"
             type="number"
@@ -92,12 +113,14 @@ function ClassicGameSetup() {
             onChange={(e) => setNbCartes(Math.max(teams, Number(e.target.value)))}
             className="w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:text-white dark:bg-primary-900 px-3 py-2 text-sm"
           />
-          <div className="text-sm text-white">{nbCartes} cartes (seront arrondies pour être réparties uniformément)</div>
+          <div className="text-sm text-white">
+            {nbCartes} cartes (seront arrondies pour être réparties uniformément)
+          </div>
         </div>
 
         <div className="pt-2">
           <button
-            type='button'
+            type="button"
             className="w-full rounded-md bg-primary-900 text-white px-4 py-2 text-sm font-medium hover:bg-indigo-700 focus-visible:outline  focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
             onClick={() => setShowIntermission(true)}
           >
@@ -106,21 +129,19 @@ function ClassicGameSetup() {
         </div>
 
         {showIntermission && (
-        <IntermissionCard>
-          <p className="mb-4 text-sm text-zinc-700 dark:text-zinc-300">Équipe {teamNames[0]}</p>
-          <button
-            type='submit'
-            className="w-full rounded-md bg-primary-900 text-white px-4 py-2 text-sm font-medium hover:bg-indigo-700 focus-visible:outline  focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+          <IntermissionCard>
+            <p className="mb-4 text-sm text-zinc-700 dark:text-zinc-300">Équipe {teamNames[0]}</p>
+            <button
+              type="submit"
+              className="w-full rounded-md bg-primary-900 text-white px-4 py-2 text-sm font-medium hover:bg-indigo-700 focus-visible:outline  focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
             >
               C'est parti !
-          </button>
-        </IntermissionCard>
+            </button>
+          </IntermissionCard>
         )}
       </form>
     </main>
-  )
+  );
 }
 
-export default ClassicGameSetup
-
-
+export default ClassicGameSetup;
