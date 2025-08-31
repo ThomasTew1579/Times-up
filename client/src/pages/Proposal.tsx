@@ -58,7 +58,7 @@ export default function CharacterJsonMailer() {
 
   const mailtoHref = useMemo(
     () => buildMailto({ to, subject, body: payload }), 
-    [to, subject, payload]
+    [to, payload]
   );
   const tooLong = mailtoHref.length > 1800;
 

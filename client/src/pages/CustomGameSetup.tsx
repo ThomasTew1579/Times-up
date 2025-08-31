@@ -24,7 +24,9 @@ export default function CustomGameSetup() {
       const namesParam = encodeURIComponent(playerNames.join('|'))
       try {
         localStorage.removeItem(CONTAINER_KEY);
-      } catch {}
+      } catch (e) {
+        console.error("Erreur ", e);
+      }
       navigate(`/game/custom/cards/setup?duration=${duration}&players=${players}&playerNames=${namesParam}`)
     }
   

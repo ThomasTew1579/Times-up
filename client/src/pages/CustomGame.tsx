@@ -32,7 +32,7 @@ type Container = {
 
 function ClassicGame() {
   let container: Container = { schemaVersion: 1, sessionId: "", submissions: [] };
-  let raw = localStorage.getItem(CONTAINER_KEY);
+  const raw = localStorage.getItem(CONTAINER_KEY);
   if (raw) {
     try {
       container = JSON.parse(raw) as Container;
@@ -41,7 +41,7 @@ function ClassicGame() {
     }
   }
   const cards = container.submissions.flatMap((s) => s.items);
-  const cardsMemo: Cards[] = useMemo(() => cards as Cards[], [])
+  const cardsMemo: Cards[] = useMemo(() => cards as Cards[], [cards])
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const [isRunning, setIsRunning] = useState(false)
@@ -122,7 +122,7 @@ function ClassicGame() {
       setIsRunning(true)
       setInitialized(true)
     }
-  }, [searchParams, deckIndices])
+  }, [searchParams, deckIndices, initialized, players, scoresByRound.length])
 
   const card = pendingIndices.length > 0 ? cardsMemo[pendingIndices[0]] : undefined
   const currentPlayer = currentPlayerIndex + 1
@@ -157,7 +157,7 @@ function ClassicGame() {
       setShowIntermission(false)
       setShowRoundRecap(true)
     }
-  }, [pendingIndices.length])
+  }, [pendingIndices.length, initialized])
 
   const finalRows = useMemo(() => {
     const rows = Array.from({ length: players }).map((_, idx) => {

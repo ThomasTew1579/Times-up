@@ -66,7 +66,7 @@ function CustomCardsSetup () {
       );
     }
 
-  }, [searchParams]);
+  }, [searchParams, player]);
   
   const [container, setContainer] = useState<Container>(() => {
     try {
@@ -80,7 +80,9 @@ function CustomCardsSetup () {
   useEffect(() => {
     try {
       localStorage.setItem(CONTAINER_KEY, JSON.stringify(container));
-    } catch {}
+    } catch (e) {
+      console.error("Erreur ", e);
+    }
   }, [container]);
 
 
@@ -153,7 +155,9 @@ function CustomCardsSetup () {
       setItems([{ name: "", description: "" }]);
       try {
         localStorage.removeItem(CONTAINER_KEY);
-      } catch {}
+      } catch (e) {
+        console.error("Erreur ", e);
+      }
     }
   }
 

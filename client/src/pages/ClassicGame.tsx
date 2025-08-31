@@ -102,7 +102,7 @@ function ClassicGame() {
       setIsRunning(true)
       setInitialized(true)
     }
-  }, [searchParams, deckIndices])
+  }, [searchParams, deckIndices, initialized, players, scoresByRound.length])
 
   const card = pendingIndices.length > 0 ? cardsMemo[pendingIndices[0]] : undefined
   const currentPlayer = currentPlayerIndex + 1
@@ -141,7 +141,7 @@ function ClassicGame() {
       setShowIntermission(false)
       setShowRoundRecap(true)
     }
-  }, [pendingIndices.length])
+  }, [pendingIndices.length, initialized])
 
   // Final results sorted by total (desc)
   const finalRows = useMemo(() => {
