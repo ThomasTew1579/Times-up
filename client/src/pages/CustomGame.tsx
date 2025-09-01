@@ -30,7 +30,7 @@ type Container = {
   submissions: PlayerSubmission[];
 };
 
-function ClassicGame() {
+function CustomGame() {
   let container: Container = { schemaVersion: 1, sessionId: '', submissions: [] };
   const raw = localStorage.getItem(CONTAINER_KEY);
   if (raw) {
@@ -396,4 +396,4 @@ function ClassicGame() {
   );
 }
 
-export default ClassicGame;
+export default CustomGame;
