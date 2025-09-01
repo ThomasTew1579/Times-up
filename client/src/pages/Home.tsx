@@ -16,6 +16,16 @@ function Home() {
         <GameCard href="/game/chill/setup">
           <h2 className="text-5xl text-stroke font-primary">Chill</h2>
         </GameCard>
+
+        <GameCard href="/setup" gameType="classic">
+          <h2 className="text-5xl text-stroke font-primary">Classique test</h2>
+        </GameCard>
+        <GameCard href="/setup" gameType="custom">
+          <h2 className="text-5xl text-stroke font-primary">Custom test</h2>
+        </GameCard>
+        <GameCard href="/setup" gameType="chill">
+          <h2 className="text-5xl text-stroke font-primary">Chill test</h2>
+        </GameCard>
       </div>
     </main>
   );

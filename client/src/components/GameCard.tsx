@@ -5,10 +5,12 @@ import { useState } from 'react';
 type GameCardProps = {
   children: ReactNode;
   href?: string;
+  gameType?: string;
 };
 
-function GameCard({ children, href }: GameCardProps) {
+function GameCard({ children, href, gameType }: GameCardProps) {
   const [displayCard, setDisplayCard] = useState(true);
+  const gameTypeUrl: string = gameType ? '?gameType=' + gameType : '';
 
   function handleClickCard() {
     return displayCard ? setDisplayCard(false) : setDisplayCard(true);
@@ -17,8 +19,8 @@ function GameCard({ children, href }: GameCardProps) {
   if (href)
     return (
       <Link
-        to={href}
-        end={href === '/'}
+        to={href + gameTypeUrl}
+        end={href ? '/' : ''}
         className="block p-2 rounded-2xl max-w-96 shadow-2xl outline-2 outline-primary-900 bg-white aspect-[85/55] relative hover:rotate-1 hover:scale-[90%] duration-200"
       >
         <div className="flex h-full flex-col gap-12 justify-center items-center p-4 bg-spirale bg-secondary-500 outline-primary-900  rounded-xl overflow-clip relative">
@@ -26,28 +28,28 @@ function GameCard({ children, href }: GameCardProps) {
           <svg
             className="absolute w-10 bottom-1 z-10 right-1"
             xmlns="http://www.w3.org/2000/svg"
-            stroke-linejoin="round"
-            stroke-linecap="round"
+            strokeLinejoin="round"
+            strokeLinecap="round"
             viewBox="0.162516 0.0453955 4.378 5.99"
           >
             <path
               d="M 3.142 0.705 L 3.623 0.305 C 3.848 0.144 4.02 0.343 3.881 0.502 L 3.376 0.946 C 3.144 1.11 2.97 0.869 3.142 0.705 M 3.364 1.235 L 4.056 1.05 C 4.411 0.99 4.411 1.335 4.184 1.433 L 3.511 1.695 C 3.271 1.764 3.115 1.316 3.364 1.235 M 3.342 1.985 L 4.031 2.084 C 4.35 2.16 4.205 2.664 3.974 2.614 L 3.241 2.508 C 2.969 2.445 3.107 1.967 3.342 1.985 M 3.107 2.741 L 3.845 3.287 C 4.061 3.464 3.61 3.939 3.481 3.837 L 2.694 3.257 C 2.46 3.027 2.963 2.624 3.107 2.741 M 2.496 3.387 L 2.976 4.43 C 3.014 4.516 2.949 4.627 2.883 4.674 L 2.593 4.872 C 2.472 4.943 2.325 4.956 2.261 4.842 L 1.817 3.89 C 1.746 3.771 1.813 3.643 1.887 3.597 L 2.285 3.351 C 2.373 3.29 2.468 3.333 2.496 3.387 M 1.379 3.743 C 1.468 3.739 1.58 3.822 1.564 3.928 L 1.396 5.488 C 1.377 5.633 1.268 5.811 1.165 5.82 L 0.583 5.835 C 0.447 5.84 0.355 5.662 0.363 5.586 L 0.574 3.994 C 0.596 3.884 0.704 3.756 0.809 3.754 L 1.379 3.743"
               stroke="#000000"
-              stroke-width="0.15"
+              strokeWidth="0.15"
               fill="#FF0000"
             />
           </svg>
           <svg
             className="absolute w-10 top-1 left-1 z-10 rotate-180"
             xmlns="http://www.w3.org/2000/svg"
-            stroke-linejoin="round"
-            stroke-linecap="round"
+            strokeLinejoin="round"
+            strokeLinecap="round"
             viewBox="0.162516 0.0453955 4.378 5.99"
           >
             <path
               d="M 3.142 0.705 L 3.623 0.305 C 3.848 0.144 4.02 0.343 3.881 0.502 L 3.376 0.946 C 3.144 1.11 2.97 0.869 3.142 0.705 M 3.364 1.235 L 4.056 1.05 C 4.411 0.99 4.411 1.335 4.184 1.433 L 3.511 1.695 C 3.271 1.764 3.115 1.316 3.364 1.235 M 3.342 1.985 L 4.031 2.084 C 4.35 2.16 4.205 2.664 3.974 2.614 L 3.241 2.508 C 2.969 2.445 3.107 1.967 3.342 1.985 M 3.107 2.741 L 3.845 3.287 C 4.061 3.464 3.61 3.939 3.481 3.837 L 2.694 3.257 C 2.46 3.027 2.963 2.624 3.107 2.741 M 2.496 3.387 L 2.976 4.43 C 3.014 4.516 2.949 4.627 2.883 4.674 L 2.593 4.872 C 2.472 4.943 2.325 4.956 2.261 4.842 L 1.817 3.89 C 1.746 3.771 1.813 3.643 1.887 3.597 L 2.285 3.351 C 2.373 3.29 2.468 3.333 2.496 3.387 M 1.379 3.743 C 1.468 3.739 1.58 3.822 1.564 3.928 L 1.396 5.488 C 1.377 5.633 1.268 5.811 1.165 5.82 L 0.583 5.835 C 0.447 5.84 0.355 5.662 0.363 5.586 L 0.574 3.994 C 0.596 3.884 0.704 3.756 0.809 3.754 L 1.379 3.743"
               stroke="#000000"
-              stroke-width="0.15"
+              strokeWidth="0.15"
               fill="#FF0000"
             />
           </svg>
@@ -66,28 +68,28 @@ function GameCard({ children, href }: GameCardProps) {
           <svg
             className="absolute w-10 bottom-1 z-10 right-1"
             xmlns="http://www.w3.org/2000/svg"
-            stroke-linejoin="round"
-            stroke-linecap="round"
+            strokeLinejoin="round"
+            strokeLinecap="round"
             viewBox="0.162516 0.0453955 4.378 5.99"
           >
             <path
               d="M 3.142 0.705 L 3.623 0.305 C 3.848 0.144 4.02 0.343 3.881 0.502 L 3.376 0.946 C 3.144 1.11 2.97 0.869 3.142 0.705 M 3.364 1.235 L 4.056 1.05 C 4.411 0.99 4.411 1.335 4.184 1.433 L 3.511 1.695 C 3.271 1.764 3.115 1.316 3.364 1.235 M 3.342 1.985 L 4.031 2.084 C 4.35 2.16 4.205 2.664 3.974 2.614 L 3.241 2.508 C 2.969 2.445 3.107 1.967 3.342 1.985 M 3.107 2.741 L 3.845 3.287 C 4.061 3.464 3.61 3.939 3.481 3.837 L 2.694 3.257 C 2.46 3.027 2.963 2.624 3.107 2.741 M 2.496 3.387 L 2.976 4.43 C 3.014 4.516 2.949 4.627 2.883 4.674 L 2.593 4.872 C 2.472 4.943 2.325 4.956 2.261 4.842 L 1.817 3.89 C 1.746 3.771 1.813 3.643 1.887 3.597 L 2.285 3.351 C 2.373 3.29 2.468 3.333 2.496 3.387 M 1.379 3.743 C 1.468 3.739 1.58 3.822 1.564 3.928 L 1.396 5.488 C 1.377 5.633 1.268 5.811 1.165 5.82 L 0.583 5.835 C 0.447 5.84 0.355 5.662 0.363 5.586 L 0.574 3.994 C 0.596 3.884 0.704 3.756 0.809 3.754 L 1.379 3.743"
               stroke="#000000"
-              stroke-width="0.15"
+              strokeWidth="0.15"
               fill="#FF0000"
             />
           </svg>
           <svg
             className="absolute w-10 top-1 left-1 z-10 rotate-180"
             xmlns="http://www.w3.org/2000/svg"
-            stroke-linejoin="round"
-            stroke-linecap="round"
+            strokeLinejoin="round"
+            strokeLinecap="round"
             viewBox="0.162516 0.0453955 4.378 5.99"
           >
             <path
               d="M 3.142 0.705 L 3.623 0.305 C 3.848 0.144 4.02 0.343 3.881 0.502 L 3.376 0.946 C 3.144 1.11 2.97 0.869 3.142 0.705 M 3.364 1.235 L 4.056 1.05 C 4.411 0.99 4.411 1.335 4.184 1.433 L 3.511 1.695 C 3.271 1.764 3.115 1.316 3.364 1.235 M 3.342 1.985 L 4.031 2.084 C 4.35 2.16 4.205 2.664 3.974 2.614 L 3.241 2.508 C 2.969 2.445 3.107 1.967 3.342 1.985 M 3.107 2.741 L 3.845 3.287 C 4.061 3.464 3.61 3.939 3.481 3.837 L 2.694 3.257 C 2.46 3.027 2.963 2.624 3.107 2.741 M 2.496 3.387 L 2.976 4.43 C 3.014 4.516 2.949 4.627 2.883 4.674 L 2.593 4.872 C 2.472 4.943 2.325 4.956 2.261 4.842 L 1.817 3.89 C 1.746 3.771 1.813 3.643 1.887 3.597 L 2.285 3.351 C 2.373 3.29 2.468 3.333 2.496 3.387 M 1.379 3.743 C 1.468 3.739 1.58 3.822 1.564 3.928 L 1.396 5.488 C 1.377 5.633 1.268 5.811 1.165 5.82 L 0.583 5.835 C 0.447 5.84 0.355 5.662 0.363 5.586 L 0.574 3.994 C 0.596 3.884 0.704 3.756 0.809 3.754 L 1.379 3.743"
               stroke="#000000"
-              stroke-width="0.15"
+              strokeWidth="0.15"
               fill="#FF0000"
             />
           </svg>

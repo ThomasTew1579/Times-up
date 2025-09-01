@@ -44,22 +44,22 @@ function CustomCardsSetup() {
   const [items, setItems] = useState<Item[]>([{ name: '', description: '' }]);
 
   useEffect(() => {
-    const j = Number(searchParams.get('players'));
-    if (!Number.isNaN(j) && j >= 2 && j <= 10) {
-      setJoueurs(j);
+    const p = Number(searchParams.get('teams'));
+    if (!Number.isNaN(p) && p >= 2 && p <= 10) {
+      setJoueurs(p);
     }
-    const namesParam = searchParams.get('playerNames');
+    const namesParam = searchParams.get('namesParam');
     if (namesParam) {
       const names = decodeURIComponent(namesParam)
         .split('|')
-        .slice(0, Math.max(2, j || player));
+        .slice(0, Math.max(2, p || player));
       setPlayerNames(
         names.length
           ? names
-          : Array.from({ length: Math.max(2, j || player) }, (_, i) => `Team ${i + 1}`)
+          : Array.from({ length: Math.max(2, p || player) }, (_, i) => `Team ${i + 1}`)
       );
     } else {
-      setPlayerNames(Array.from({ length: Math.max(2, j || player) }, (_, i) => `Team ${i + 1}`));
+      setPlayerNames(Array.from({ length: Math.max(2, p || player) }, (_, i) => `Team ${i + 1}`));
     }
   }, [searchParams, player]);
 
@@ -130,9 +130,11 @@ function CustomCardsSetup() {
 
     if (everyoneDone) {
       const duration = searchParams.get('duration');
-      const players = searchParams.get('players');
-      const playerNames = searchParams.get('playerNames');
-      navigate(`/game/custom?duration=${duration}&players=${players}&playerNames=${playerNames}`);
+      const players = searchParams.get('teams');
+      const playerNames = searchParams.get('namesParam');
+      navigate(
+        `/game?gameType=custom&duration=${duration}&teams=${players}&namesParam=${playerNames}`
+      );
       return;
     }
 
