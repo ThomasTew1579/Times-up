@@ -21,7 +21,7 @@ function GameSetup() {
   const navigate = useNavigate();
   const [duration, setDuration] = useState<number>(45);
   const [teams, setTeams] = useState<number>(2);
-  const [teamNames, setTeamNames] = useState<string[]>(['Équipes 1', 'Équipes 2']);
+  const [teamNames, setTeamNames] = useState<string[]>(['Équipe 1', 'Équipe 2']);
   const [nbCartes, setNbCartes] = useState<number>(40);
   const [showIntermission, setShowIntermission] = useState<boolean>(false);
   const gameType = searchParams.get('gameType');
@@ -155,7 +155,7 @@ function GameSetup() {
                     setTeamNames((arr) => arr.map((n, i) => (i === idx ? e.target.value : n)))
                   }
                   className="w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-primary-900 dark:text-white px-3 py-2 text-sm"
-                  placeholder={`Team ${idx + 1}`}
+                  placeholder={`Équipes ${idx + 1}`}
                 />
               ))}
             </div>

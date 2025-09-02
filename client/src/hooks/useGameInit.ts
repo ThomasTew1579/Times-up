@@ -27,7 +27,7 @@ export function useGameInit({ cards, defaultPlayers = 4, defaultDuration = 60 }:
   const durationParam = coerceNumberParam(searchParams.get('duration'));
   const playersParam = coerceNumberParam(searchParams.get('teams') ?? searchParams.get('players'));
   const nbCartesParam = coerceNumberParam(searchParams.get('nbCartes'));
-  const teamNamesParam = searchParams.get('teamNames');
+  const teamNamesParam = searchParams.get('namesParam');
 
   const duration = useMemo(
     () => (durationParam ? clampNumber(durationParam, 1, 600) : defaultDuration),

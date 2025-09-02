@@ -56,9 +56,9 @@ export function coerceNumberParam(v: string | null): number | null {
 }
 
 export function deriveTeamNames(raw: string | null, count: number): string[] {
-  if (!raw) return Array.from({ length: count }, (_, i) => `Team ${i + 1}`);
+  if (!raw) return Array.from({ length: count }, (_, i) => `Équipe ${i + 1}`);
   const names = decodeURIComponent(raw).split('|').slice(0, count);
-  return names.length ? names : Array.from({ length: count }, (_, i) => `Team ${i + 1}`);
+  return names.length ? names : Array.from({ length: count }, (_, i) => `Équipe ${i + 1}`);
 }
 
 export function buildDeckIndices(
