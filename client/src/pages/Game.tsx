@@ -164,15 +164,15 @@ function Game() {
         {card ? (
           <>
             <GameCard>
-              <div className="text-2xl text-primary-900 text-center font-primary">{card.name}</div>
-              <div className="desc text-xs">
-                {card.description && <p className="text-white text-center">{card.description}</p>}
-                {card.date && <p className=" text-white text-center">{card.date}</p>}
-              </div>
+              <span className="title">{card.name}</span>
+              <span className="desc">
+                {card.description && <p>{card.description}</p>}
+                {card.date && <p>{card.date}</p>}
+              </span>
             </GameCard>
           </>
         ) : (
-          <div className="text-zinc-600 dark:text-zinc-300">Aucune carte disponible.</div>
+          <div className="text-white">Aucune carte disponible.</div>
         )}
       </section>
 
@@ -193,14 +193,14 @@ function Game() {
             {gameTypeParams.teams ? 'Équipes suivante' : 'Au suivant !'}
           </h2>
           {gameTypeParams.teams && (
-            <p className="mb-4 text-sm text-zinc-700 dark:text-zinc-300">
+            <p className="mb-4 text-sm text-white">
               {teamNames[(currentPlayerIndex + 1) % players] ??
                 `Équipe ${((currentPlayerIndex + 1) % players) + 1}`}
             </p>
           )}
           <div className="flex gap-2 justify-end">
             <button
-              className="rounded-md border border-zinc-200 dark:border-zinc-700 px-3 py-2 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800"
+              className="btn-primary"
               onClick={() => {
                 setCurrentPlayerIndex((p) => (p + 1) % players);
                 setRemaining(duration);
@@ -268,7 +268,7 @@ function Game() {
           <h2 className="text-xl font-semibold mb-2">Fin de la partie</h2>
           <div className="flex gap-2 justify-end">
             <button
-              className="rounded-md border border-zinc-200 dark:border-zinc-700 px-3 py-2 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800"
+              className="btn-primary"
               onClick={() => {
                 setPendingIndices(shuffle(deckIndices));
                 setIsRunning(true);
@@ -278,7 +278,7 @@ function Game() {
               Relancer une partie !
             </button>
             <button
-              className="rounded-md border border-zinc-200 dark:border-zinc-700 px-3 py-2 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800"
+              className="btn-primary"
               onClick={() => {
                 setShowEndgame(false);
                 navigate('/');

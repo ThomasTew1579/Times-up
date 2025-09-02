@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import FormCard from '../components/FormCard';
+import Dropdown from '../components/Dropdown';
 
 type Item = {
   author: string;
@@ -72,7 +73,7 @@ export default function CharacterJsonMailer() {
 
   return (
     <div className="mx-auto max-w-3xl p-6 ">
-      <h1 className="text-2xl font-semibold font-secondary text-white text-center mb-4">
+      <h1 className="text-2xl font-semibold font-primary text-white text-center mb-4">
         Propose tes propres cartes à jouer !
       </h1>
 
@@ -83,7 +84,6 @@ export default function CharacterJsonMailer() {
           value={author}
           onChange={(e) => setAuthor(e.target.value)}
           placeholder="Votre nom ou pseudo"
-          className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
@@ -95,8 +95,8 @@ export default function CharacterJsonMailer() {
                 <h2 className="text-2xl text-white font-primary">Carte #{i + 1}</h2>
                 <button
                   type="button"
+                  className="btn-primary px-2 py-1"
                   onClick={() => removeItem(i)}
-                  className="text-sm rounded-lg border px-2 py-1 text-white border-white"
                   disabled={items.length === 1}
                   title={items.length === 1 ? 'Au moins un élément requis' : 'Supprimer'}
                 >
@@ -114,7 +114,7 @@ export default function CharacterJsonMailer() {
         <button
           type="button"
           onClick={addItem}
-          className="rounded-xl border px-4 py-2  text-white border-white hover:bg-primary-500"
+          className="btn-primary"
         >
           + Ajouter un élément
         </button>
@@ -122,14 +122,9 @@ export default function CharacterJsonMailer() {
 
       <div className="mt-6">
         {isAdmin && (
-          <details className="rounded-2xl border border-zinc-200 p-4">
-            <summary className="cursor-pointer  text-white select-none font-medium">
-              Aperçu du JSON
-            </summary>
-            <pre className="mt-3 overflow-x-auto whitespace-pre-wrap rounded-xl bg-zinc-50 p-3 text-sm">
-              {payload}
-            </pre>
-          </details>
+          <Dropdown title="Aperçu du JSON">
+            {payload}
+          </Dropdown>
         )}
 
         {tooLong && (
@@ -140,13 +135,13 @@ export default function CharacterJsonMailer() {
         )}
 
         <div className="mt-4 flex flex-wrap gap-3">
-          <a href={mailtoHref} className="rounded-xl text-white border px-4 py-2 hover:bg-zinc-50">
+          <a href={mailtoHref} className="btn-primary">
             Envoyer !
           </a>
           <button
             type="button"
             onClick={copyJson}
-            className="rounded-xl text-white border px-4 py-2 hover:bg-zinc-50"
+            className="btn-primary"
           >
             Copier le JSON
           </button>

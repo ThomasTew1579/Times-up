@@ -36,7 +36,6 @@ export default function FormCard({ item, onChange, creator }: Props) {
           value={item.name}
           onChange={(e) => onChange({ name: e.target.value })}
           placeholder="Nom de l’élément"
-          className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
@@ -46,7 +45,6 @@ export default function FormCard({ item, onChange, creator }: Props) {
           <select
             value={item.category}
             onChange={(e) => onChange({ category: e.target.value })}
-            className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
           >
             {OBJECT_TYPES.map((opt) => (
               <option key={opt} value={opt}>
@@ -64,7 +62,6 @@ export default function FormCard({ item, onChange, creator }: Props) {
           onChange={(e) => onChange({ description: e.target.value })}
           rows={3}
           placeholder="Décris brièvement l’élément…"
-          className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
@@ -83,7 +80,6 @@ export default function FormCard({ item, onChange, creator }: Props) {
                   : Math.trunc(e.currentTarget.valueAsNumber),
               })
             }
-            className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
       )}
@@ -102,7 +98,7 @@ export default function FormCard({ item, onChange, creator }: Props) {
                   : Math.trunc(e.currentTarget.valueAsNumber),
               })
             }
-            className="w-full rounded-lg border border-zinc-300 bg-white mt-6 px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+            className="mt-6"
           />
         </div>
       )}

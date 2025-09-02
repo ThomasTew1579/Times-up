@@ -65,13 +65,13 @@ const FinalResults: React.FC<FinalResultsProps> = ({
         </div>
         <div className="flex gap-2 justify-end">
           <button
-            className="rounded-md border border-zinc-200 dark:border-zinc-700 px-3 py-2 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800"
+            className="btn-confirm"
             onClick={onPlayAgain}
           >
             Rejouer
           </button>
           <button
-            className="rounded-md border border-zinc-200 dark:border-zinc-700 px-3 py-2 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800"
+            className="btn-confirm"
             onClick={onBackToHome}
           >
             Retour à l'accueil

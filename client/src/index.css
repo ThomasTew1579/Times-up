@@ -7,14 +7,9 @@
   src: url(./assets/font/LuckiestGuy-Regular.woff2);
 }
 
-@font-face {
-  font-family: 'RockSalt';
-  src: url(./assets/font/RockSalt-Regular.woff2);
-}
 
 @theme {
   --font-primary: 'LuckiestGuy';
-  --font-secondary: 'RockSalt';
 
   --color-primary-200: oklch(0.51 0.16 253.22);
   --color-primary-500: oklch(0.48 0.15 254.07);
@@ -50,4 +45,86 @@
 
 @utility clip-path {
   clip-path: polygon(0 60%, 100% 40%, 100% 100%, 0% 100%);
+}
+
+
+@layer theme {
+  @supports (interpolate-size: allow-keywords) {
+    ::details-content {
+      height: 0;
+      contain: paint;
+      transition: height 0.3s ease, content-visibility 0.3s ease allow-discret;
+    }
+
+    :root {
+      interpolate-size: allow-keywords;
+    }
+
+    [open]::details-content {
+      height: auto;
+    }
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
+
+      &:: -webkit-outer-spin-button,
+      &:: -webkit-iner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+  }
+
+  
+
+}
+
+@layer components {
+  .btn-primary {
+    @apply rounded-xl border px-4 py-2  text-white border-white hover:bg-gray-600/50 disabled:opacity-45 ;
+  }
+
+  .title-1 {
+    @apply text-3xl font-bold font-primary text-center text-white mb-6;
+  }
+
+  .card-link {
+    & span {
+      @apply text-5xl text-stroke font-primary;
+    }
+  }
+
+  .card-game {
+    .title {
+      @apply text-2xl text-primary-900 text-center font-primary;
+    }
+    .desc {
+      @apply text-xs;
+      & p {
+        @apply text-white text-center;
+      }
+    }
+  }
+
+  input[type="text"],
+  input[type="number"],
+  select,
+  textarea {
+    @apply w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500;
+  }
+
+  form.form-card {
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+      @apply w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-primary-900 dark:text-white px-3 py-2 text-sm;
+    }
+    label {
+      @apply block text-sm font-medium text-white font-primary;
+    }
+    .btn-submit {
+      @apply w-full rounded-md bg-primary-900 text-white px-4 py-2 text-sm font-medium hover:bg-indigo-700 focus-visible:outline  focus-visible:outline-offset-2 focus-visible:outline-indigo-500
+    }
+  }
 }

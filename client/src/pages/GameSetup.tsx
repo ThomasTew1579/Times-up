@@ -93,7 +93,7 @@ function GameSetup() {
 
   return (
     <main className="mx-auto container max-w-xl px-4 py-8">
-      <h1 className="text-3xl font-bold font-primary text-center text-white mb-6">
+      <h1 className="title-1">
         Configuration
       </h1>
 
@@ -103,17 +103,16 @@ function GameSetup() {
         </Dropdown>
       )}
 
-      <form onSubmit={onSubmit} className="space-y-6">
+      <form onSubmit={onSubmit} className="space-y-6 form-card ">
         {gameTypeParams.duration && (
           <div className="space-y-2">
-            <label htmlFor="duration" className="block text-sm font-medium text-white font-primary">
+            <label htmlFor="duration">
               Durée du tour
             </label>
             <select
               id="duration"
               value={duration}
               onChange={(e) => setDuration(Number(e.target.value))}
-              className="w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-primary-900 dark:text-white px-3 py-2 text-sm"
             >
               <option value={20}>20 secondes 🔴</option>
               <option value={30}>30 secondes 🟠</option>
@@ -125,7 +124,7 @@ function GameSetup() {
 
         {gameTypeParams.teams && (
           <div className="space-y-2">
-            <label htmlFor="teams" className="block text-sm font-medium text-white font-primary">
+            <label htmlFor="teams">
               Nombre d'équipes
             </label>
             <input
@@ -143,7 +142,7 @@ function GameSetup() {
 
         {gameTypeParams.namesParam && (
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-white font-primary">
+            <label>
               Noms des équipes
             </label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -155,7 +154,6 @@ function GameSetup() {
                   onChange={(e) =>
                     setTeamNames((arr) => arr.map((n, i) => (i === idx ? e.target.value : n)))
                   }
-                  className="w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-primary-900 dark:text-white px-3 py-2 text-sm"
                   placeholder={`Équipes ${idx + 1}`}
                 />
               ))}
@@ -165,7 +163,7 @@ function GameSetup() {
 
         {gameTypeParams.nbCartes && (
           <div className="space-y-2">
-            <label htmlFor="nbCartes" className="block text-sm font-medium text-white font-primary">
+            <label htmlFor="nbCartes">
               Nombre de cartes
             </label>
             <input
@@ -176,7 +174,6 @@ function GameSetup() {
               step={teams}
               value={floorToMultiple(Number(nbCartes), teams)}
               onChange={(e) => setNbCartes(Math.max(teams, floorToMultiple(Number(e.target.value), teams)))}
-              className="w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:text-white dark:bg-primary-900 px-3 py-2 text-sm"
             />
           </div>
         )}
@@ -184,7 +181,7 @@ function GameSetup() {
         <div className="pt-2">
           <button
             type="button"
-            className="w-full rounded-md bg-primary-900 text-white px-4 py-2 text-sm font-medium hover:bg-indigo-700 focus-visible:outline  focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+            className="btn-submit"
             onClick={() => setShowIntermission(true)}
           >
             Démarrer le jeu
@@ -193,10 +190,10 @@ function GameSetup() {
 
         {showIntermission && (
           <IntermissionCard>
-            <p className="mb-4 text-sm text-zinc-700 dark:text-zinc-300">Équipe {teamNames[0]}</p>
+            <p className="mb-4 text-sm text-zinc-300">Équipe {teamNames[0]}</p>
             <button
               type="submit"
-              className="w-full rounded-md bg-primary-900 text-white px-4 py-2 text-sm font-medium hover:bg-indigo-700 focus-visible:outline  focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+              className="btn-submit"
             >
               C'est parti !
             </button>

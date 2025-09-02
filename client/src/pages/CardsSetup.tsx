@@ -162,9 +162,9 @@ function CardsSetup() {
   return (
     <div>
       {shownCardsCreator && (
-        <div className=" flex items-center justify-center py-8 ">
+        <div className=" flex items-center justify-center py-8 px-4 ">
           <div className="w-full rounded-lg max-h-dvh overflow-auto  ">
-            <h1 className="text-3xl font-bold font-secondary text-center text-white mb-6">
+            <h1 className="title-1">
               Mode custom - Création des cartes
             </h1>
             <p className="mb-4 text-sm text-zinc-700 dark:text-zinc-300">
@@ -181,7 +181,7 @@ function CardsSetup() {
                       <button
                         type="button"
                         onClick={() => removeItem(i)}
-                        className="text-sm rounded-lg border px-2 py-1 text-white border-white"
+                        className="btn-primary px-2 py-1"
                         disabled={items.length === 1}
                         title={items.length === 1 ? 'Au moins un élément requis' : 'Supprimer'}
                       >
@@ -201,23 +201,17 @@ function CardsSetup() {
                   disabled={items.length >= CARDS_PER_PLAYER}
                   type="button"
                   onClick={addItem}
-                  className="rounded-xl border px-4 py-2  text-white border-white hover:bg-primary-500 disabled:text-gray-500 disabled:border-gray-500"
+                  className="btn-primary "
                 >
                   + Ajouter un élément
                 </button>
               </div>
               <div className="mt-4 flex gap-3 items-center">
-                {!allCardsValid && (
-                  <p className="text-sm text-amber-300">
-                    Chaque carte doit avoir un <strong>nom</strong> et une{' '}
-                    <strong>description</strong>.
-                  </p>
-                )}
                 <button
                   disabled={!allCardsValid}
                   type="button"
                   onClick={commitCurrentSubmission}
-                  className="rounded-xl border px-4 py-2  text-white border-white hover:bg-primary-500 disabled:text-gray-500 disabled:border-gray-500"
+                  className="btn-primary"
                 >
                   Terminer
                 </button>
@@ -229,7 +223,7 @@ function CardsSetup() {
             {isAdmin && finalCards.length > 0 && (
               <div className="mt-6 flex gap-2">
                 <button
-                  className="rounded-md border border-zinc-200 dark:border-zinc-700 px-3 py-2 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800"
+                  className="btn-primary"
                   onClick={async () => {
                     await navigator.clipboard.writeText(finalJsonText);
                     alert('JSON final copié !');
@@ -239,7 +233,7 @@ function CardsSetup() {
                 </button>
 
                 <button
-                  className="rounded-md border border-rose-300 px-3 py-2 text-sm font-medium text-rose-600 hover:bg-rose-50"
+                  className="btn-primary text-rose-600 hover:bg-rose-50"
                   onClick={resetAllSubmissions}
                 >
                   Réinitialiser les propositions
@@ -259,7 +253,7 @@ function CardsSetup() {
           </p>
           <div className="flex gap-2 justify-end">
             <button
-              className="rounded-md border border-zinc-200 dark:border-zinc-700 px-3 py-2 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800"
+              className="btn-primary"
               onClick={() => {
                 setShownCardsCreator(true);
                 setShowIntermissionCreator(false);

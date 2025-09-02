@@ -16,7 +16,7 @@ function Menu({ children }: MenuProps) {
             aria-controls="mobile-menu"
             aria-expanded={isOpen}
             onClick={() => setIsOpen((v) => !v)}
-            className="md:hidden inline-flex items-center justify-center rounded-md p-2 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 transition"
+            className="md:hidden inlin-flex items-center justify-center rounded-md p-2 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 transition"
           >
             <span className="sr-only">Ouvrir le menu</span>
             <svg
