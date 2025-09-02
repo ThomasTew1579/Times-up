@@ -26,9 +26,9 @@ function Game() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const container = readContainerFromStorage(CONTAINER_KEY);
-  const customCards = container.submissions.flatMap(s => s.items);
-  const gameType = searchParams.get('gameType') as 'classic'|'chill'|'custom'|null;
-  const currentCards = gameType === 'custom' ? customCards : (cardsList);
+  const customCards = container.submissions.flatMap((s) => s.items);
+  const gameType = searchParams.get('gameType') as 'classic' | 'chill' | 'custom' | null;
+  const currentCards = gameType === 'custom' ? customCards : cardsList;
   const cardsMemo = useMemo(() => currentCards, [currentCards]);
   const {
     gameTypeParams,
@@ -36,7 +36,7 @@ function Game() {
     players: initPlayers,
     teamNames: initTeamNames,
     deckIndices: initDeck,
-    initialScores
+    initialScores,
   } = useGameInit({ cards: cardsMemo, defaultPlayers: 4, defaultDuration: 60 });
   const [duration] = useState(initDuration);
   const [remaining, setRemaining] = useState(initDuration);

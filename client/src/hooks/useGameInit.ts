@@ -7,10 +7,10 @@ import {
   deriveTeamNames,
   buildDeckIndices,
   initScoresMatrix,
-  type GameParams
+  type GameParams,
 } from './helpers';
 
-type Card = { name: string; description?: string; date?: string; };
+type Card = { name: string; description?: string; date?: string };
 
 type UseGameInitInput = {
   cards: Card[];
@@ -21,11 +21,11 @@ type UseGameInitInput = {
 export function useGameInit({ cards, defaultPlayers = 4, defaultDuration = 60 }: UseGameInitInput) {
   const [searchParams] = useSearchParams();
 
-  const gameType = searchParams.get('gameType') as 'classic'|'chill'|'custom'|null;
+  const gameType = searchParams.get('gameType') as 'classic' | 'chill' | 'custom' | null;
   const gameTypeParams: GameParams = useMemo(() => parseGameTypeParams(gameType), [gameType]);
 
   const durationParam = coerceNumberParam(searchParams.get('duration'));
-  const playersParam  = coerceNumberParam(searchParams.get('teams') ?? searchParams.get('players'));
+  const playersParam = coerceNumberParam(searchParams.get('teams') ?? searchParams.get('players'));
   const nbCartesParam = coerceNumberParam(searchParams.get('nbCartes'));
   const teamNamesParam = searchParams.get('teamNames');
 
@@ -49,10 +49,7 @@ export function useGameInit({ cards, defaultPlayers = 4, defaultDuration = 60 }:
     [cards.length, nbCartesParam, gameTypeParams.teams, players]
   );
 
-  const initialScores = useMemo(
-    () => initScoresMatrix(3, Math.max(2, players)),
-    [players]
-  );
+  const initialScores = useMemo(() => initScoresMatrix(3, Math.max(2, players)), [players]);
 
   return {
     gameType,

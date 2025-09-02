@@ -18,18 +18,30 @@ export type Container = {
 export function readContainerFromStorage(key: string): Container {
   try {
     const raw = localStorage.getItem(key);
-    return raw ? (JSON.parse(raw) as Container) : { schemaVersion: 1, sessionId: "", submissions: [] };
+    return raw
+      ? (JSON.parse(raw) as Container)
+      : { schemaVersion: 1, sessionId: '', submissions: [] };
   } catch {
-    return { schemaVersion: 1, sessionId: "", submissions: [] };
+    return { schemaVersion: 1, sessionId: '', submissions: [] };
   }
 }
 
-export function parseGameTypeParams(gameType: 'classic'|'chill'|'custom'|null): GameParams {
+export function parseGameTypeParams(gameType: 'classic' | 'chill' | 'custom' | null): GameParams {
   switch (gameType) {
-    case 'classic': return { cardsCutom: false, duration: true,  teams: true,  nbCartes: true,  namesParam: true  };
-    case 'chill':   return { cardsCutom: false, duration: false, teams: false, nbCartes: true,  namesParam: false };
-    case 'custom':  return { cardsCutom: true,  duration: true,  teams: true,  nbCartes: false, namesParam: true  };
-    default:        return { cardsCutom: false, duration: true,  teams: true,  nbCartes: true,  namesParam: true  };
+    case 'classic':
+      return { cardsCutom: false, duration: true, teams: true, nbCartes: true, namesParam: true };
+    case 'chill':
+      return {
+        cardsCutom: false,
+        duration: false,
+        teams: false,
+        nbCartes: true,
+        namesParam: false,
+      };
+    case 'custom':
+      return { cardsCutom: true, duration: true, teams: true, nbCartes: false, namesParam: true };
+    default:
+      return { cardsCutom: false, duration: true, teams: true, nbCartes: true, namesParam: true };
   }
 }
 
@@ -49,7 +61,12 @@ export function deriveTeamNames(raw: string | null, count: number): string[] {
   return names.length ? names : Array.from({ length: count }, (_, i) => `Team ${i + 1}`);
 }
 
-export function buildDeckIndices(total: number, requested: number | null, teams: boolean, players: number): number[] {
+export function buildDeckIndices(
+  total: number,
+  requested: number | null,
+  teams: boolean,
+  players: number
+): number[] {
   const target = requested && requested > 0 ? Math.min(requested, total) : total;
   const teamBase = Math.max(2, players);
   const equitable = teams ? Math.floor(target / teamBase) * teamBase : target;
