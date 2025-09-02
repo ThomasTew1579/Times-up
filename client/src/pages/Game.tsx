@@ -8,32 +8,10 @@ import GameControls from '../components/GameControls';
 import Scoreboard from '../components/Scoreboard';
 import RoundRecap from '../components/RoundRecap';
 import FinalResults from '../components/FinalResults';
-
-type Card = {
-  name: string;
-  description?: string;
-  date?: string;
-};
-
-type GameParams = {
-  cardsCutom: boolean;
-  duration: boolean;
-  teams: boolean;
-  nbCartes: boolean;
-  namesParam: boolean;
-};
+import { useGameInit } from '../hooks/useGameInit';
+import { readContainerFromStorage } from '../hooks/helpers';
 
 const CONTAINER_KEY = 'timesup:submissions';
-
-type PlayerSubmission = {
-  player: string;
-  items: Array<{ name: string; description: string; date?: string }>;
-};
-type Container = {
-  schemaVersion: 1;
-  sessionId: string;
-  submissions: PlayerSubmission[];
-};
 
 function shuffle<T>(array: T[]): T[] {
   const a = array.slice();
@@ -45,38 +23,31 @@ function shuffle<T>(array: T[]): T[] {
 }
 
 function Game() {
-  const [container] = useState<Container>(() => {
-    try {
-      const raw = localStorage.getItem(CONTAINER_KEY);
-      return raw ? JSON.parse(raw) as Container : { schemaVersion: 1, sessionId: '', submissions: [] };
-    } catch { return { schemaVersion: 1, sessionId: '', submissions: [] }; }
-  });
-  const cards = container.submissions.flatMap((s) => s.items);
   const [searchParams] = useSearchParams();
-  const gameType = searchParams.get('gameType') as 'classic'|'chill'|'custom'|null;
-  const gameTypeParams: GameParams = useMemo(() => {
-    switch (gameType) {
-      case 'classic':
-        return { cardsCutom: false, duration: true, teams: true, nbCartes: true, namesParam: true };
-      case 'chill':
-        return { cardsCutom: false, duration: false, teams: false, nbCartes: true, namesParam: false };
-      case 'custom':
-        return { cardsCutom: true, duration: true, teams: true, nbCartes: false, namesParam: true };
-      default:
-        return { cardsCutom: false, duration: true, teams: true, nbCartes: true, namesParam: true };
-    }
-  }, [gameType]);
-  const currentCards = gameTypeParams.cardsCutom ? cards : cardsList;
-  const cardsMemo: Card[] = useMemo(() => currentCards as Card[], []);
   const navigate = useNavigate();
-  const [isRunning, setIsRunning] = useState(false);
-  const [duration, setDuration] = useState(60);
-  const [remaining, setRemaining] = useState(60);
-  const [players, setPlayers] = useState(4);
+  const container = readContainerFromStorage(CONTAINER_KEY);
+  const customCards = container.submissions.flatMap(s => s.items) as any[];
+  const gameType = searchParams.get('gameType') as 'classic'|'chill'|'custom'|null;
+  const currentCards = gameType === 'custom' ? customCards : (cardsList as any[]);
+  const cardsMemo = useMemo(() => currentCards, [currentCards]);
+  const {
+    gameTypeParams,
+    duration: initDuration,
+    players: initPlayers,
+    teamNames: initTeamNames,
+    deckIndices: initDeck,
+    initialScores
+  } = useGameInit({ cards: cardsMemo, defaultPlayers: 4, defaultDuration: 60 });
+  const [duration] = useState(initDuration);
+  const [remaining, setRemaining] = useState(initDuration);
+  const [players] = useState(initPlayers);
+  const [teamNames] = useState(initTeamNames);
+  const [scoresByRound, setScoresByRound] = useState<number[][]>(initialScores);
+  const [pendingIndices, setPendingIndices] = useState<number[]>(initDeck);
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
   const [currentRound, setCurrentRound] = useState(1);
-  const [scoresByRound, setScoresByRound] = useState<number[][]>([]);
-  const [teamNames, setTeamNames] = useState<string[]>([]);
+  const [isRunning, setIsRunning] = useState(true);
+
   const [showIntermission, setShowIntermission] = useState(false);
   const [showEndgame, setShowEndgame] = useState(false);
   const [initialized, setInitialized] = useState(false);
@@ -92,7 +63,6 @@ function Game() {
     const shuffled = shuffle(indices);
     return shuffled.slice(0, equitable > 0 ? equitable : Math.max(2, players));
   }, [cardsMemo, players, searchParams]);
-  const [pendingIndices, setPendingIndices] = useState<number[]>([]);
 
   useEffect(() => {
     if (!isRunning || remaining <= 0) return;
@@ -122,36 +92,6 @@ function Game() {
   }, [remaining, isRunning]);
 
   useEffect(() => {
-    const d = Number(searchParams.get('duration'));
-    const t = Number(searchParams.get('teams') ?? searchParams.get('players'));
-    if (!Number.isNaN(d) && d > 0 && d <= 600) {
-      setDuration(d);
-      setRemaining(d);
-    }
-    if (!Number.isNaN(t) && t >= 2 && t <= 10) {
-      setPlayers(t);
-    }
-    const namesParam = searchParams.get('teamNames');
-    if (namesParam) {
-      const names = decodeURIComponent(namesParam)
-        .split('|')
-        .slice(0, Math.max(2, t || players));
-      setTeamNames(
-        names.length
-          ? names
-          : Array.from({ length: Math.max(2, t || players) }, (_, i) => `Team ${i + 1}`)
-      );
-    } else {
-      setTeamNames(Array.from({ length: Math.max(2, t || players) }, (_, i) => `Team ${i + 1}`));
-    }
-    setPendingIndices(deckIndices);
-    setCurrentPlayerIndex(0);
-    setCurrentRound(1);
-    if (t && t >= 2 && t <= 10) {
-      setScoresByRound(Array.from({ length: 3 }, () => Array(t).fill(0)));
-    } else if (!scoresByRound.length) {
-      setScoresByRound(Array.from({ length: 3 }, () => Array(4).fill(0)));
-    }
     if (!initialized) {
       setIsRunning(true);
       setInitialized(true);
@@ -188,7 +128,6 @@ function Game() {
     }
   }
 
-  // End of round detection (no more pending cards)
   const [showRoundRecap, setShowRoundRecap] = useState(false);
   useEffect(() => {
     if (initialized && pendingIndices.length === 0) {
@@ -198,7 +137,6 @@ function Game() {
     }
   }, [pendingIndices.length, initialized]);
 
-  // Final results sorted by total (desc)
   const finalRows = useMemo(() => {
     const rows = Array.from({ length: players }).map((_, idx) => {
       const r1 = scoresByRound[0]?.[idx] ?? 0;
