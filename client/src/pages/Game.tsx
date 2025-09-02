@@ -26,9 +26,9 @@ function Game() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const container = readContainerFromStorage(CONTAINER_KEY);
-  const customCards = container.submissions.flatMap(s => s.items) as any[];
+  const customCards = container.submissions.flatMap(s => s.items);
   const gameType = searchParams.get('gameType') as 'classic'|'chill'|'custom'|null;
-  const currentCards = gameType === 'custom' ? customCards : (cardsList as any[]);
+  const currentCards = gameType === 'custom' ? customCards : (cardsList);
   const cardsMemo = useMemo(() => currentCards, [currentCards]);
   const {
     gameTypeParams,
@@ -62,7 +62,7 @@ function Game() {
     const indices = Array.from({ length: total }, (_, i) => i);
     const shuffled = shuffle(indices);
     return shuffled.slice(0, equitable > 0 ? equitable : Math.max(2, players));
-  }, [cardsMemo, players, searchParams]);
+  }, [cardsMemo, players, searchParams, gameTypeParams.teams]);
 
   useEffect(() => {
     if (!isRunning || remaining <= 0) return;
