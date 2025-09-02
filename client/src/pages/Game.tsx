@@ -45,30 +45,21 @@ function shuffle<T>(array: T[]): T[] {
 }
 
 function Game() {
-  let container: Container = { schemaVersion: 1, sessionId: '', submissions: [] };
-  const raw = localStorage.getItem(CONTAINER_KEY);
-  if (raw) {
+  const [container] = useState<Container>(() => {
     try {
-      container = JSON.parse(raw) as Container;
-    } catch (e) {
-      console.error('JSON invalide en localStorage', e);
-    }
-  }
+      const raw = localStorage.getItem(CONTAINER_KEY);
+      return raw ? JSON.parse(raw) as Container : { schemaVersion: 1, sessionId: '', submissions: [] };
+    } catch { return { schemaVersion: 1, sessionId: '', submissions: [] }; }
+  });
   const cards = container.submissions.flatMap((s) => s.items);
   const [searchParams] = useSearchParams();
-  const gameType = searchParams.get('gameType');
+  const gameType = searchParams.get('gameType') as 'classic'|'chill'|'custom'|null;
   const gameTypeParams: GameParams = useMemo(() => {
     switch (gameType) {
       case 'classic':
         return { cardsCutom: false, duration: true, teams: true, nbCartes: true, namesParam: true };
       case 'chill':
-        return {
-          cardsCutom: false,
-          duration: false,
-          teams: false,
-          nbCartes: true,
-          namesParam: false,
-        };
+        return { cardsCutom: false, duration: false, teams: false, nbCartes: true, namesParam: false };
       case 'custom':
         return { cardsCutom: true, duration: true, teams: true, nbCartes: false, namesParam: true };
       default:
@@ -153,7 +144,6 @@ function Game() {
     } else {
       setTeamNames(Array.from({ length: Math.max(2, t || players) }, (_, i) => `Team ${i + 1}`));
     }
-    // reset deck position when params change
     setPendingIndices(deckIndices);
     setCurrentPlayerIndex(0);
     setCurrentRound(1);
@@ -169,12 +159,11 @@ function Game() {
   }, [searchParams, deckIndices, initialized, players, scoresByRound.length]);
 
   const card = pendingIndices.length > 0 ? cardsMemo[pendingIndices[0]] : undefined;
-  // const currentPlayer = currentPlayerIndex + 1;
   const totalCards = deckIndices.length;
   const validatedCount = totalCards - pendingIndices.length;
   const avancee = `${validatedCount}/${totalCards || '?'}`;
 
-  function nextCarte() {
+  function handleSkip() {
     if (pendingIndices.length <= 1) return;
     setPendingIndices((arr) => (arr.length <= 1 ? arr : [...arr.slice(1), arr[0]]));
   }
@@ -197,11 +186,6 @@ function Game() {
         setShowEndgame(true);
       }
     }
-  }
-
-  function handleSkip() {
-    // move current card to end
-    nextCarte();
   }
 
   // End of round detection (no more pending cards)
@@ -268,8 +252,7 @@ function Game() {
       {showIntermission && (
         <IntermissionCard>
           <h2 className="text-xl font-semibold mb-2">
-            {' '}
-            {gameTypeParams.teams ? 'Équipes suivante' : 'Au suivant !'}{' '}
+            {gameTypeParams.teams ? 'Équipes suivante' : 'Au suivant !'}
           </h2>
           {gameTypeParams.teams && (
             <p className="mb-4 text-sm text-zinc-700 dark:text-zinc-300">
@@ -283,8 +266,6 @@ function Game() {
               onClick={() => {
                 setCurrentPlayerIndex((p) => (p + 1) % players);
                 setRemaining(duration);
-                // nextPlayer();
-                // resetTimer(duration);
                 setIsRunning(true);
                 setShowIntermission(false);
               }}
@@ -314,8 +295,6 @@ function Game() {
             setPendingIndices(shuffle(deckIndices));
             setCurrentRound((r) => r + 1);
             setRemaining(duration);
-            // nextRound();
-            // resetTimer(duration);
             setIsRunning(true);
             setShowRoundRecap(false);
             setShowIntermission(true);
@@ -337,8 +316,6 @@ function Game() {
             setCurrentPlayerIndex(0);
             setPendingIndices(shuffle(deckIndices));
             setRemaining(duration);
-            // resetGame();
-            // resetTimer(duration);
             setIsRunning(true);
             setShowFinalRecap(false);
           }}
@@ -355,8 +332,8 @@ function Game() {
             <button
               className="rounded-md border border-zinc-200 dark:border-zinc-700 px-3 py-2 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800"
               onClick={() => {
-                setPendingIndices(deckIndices);
-                // initializeDeck();
+                setPendingIndices(shuffle(deckIndices));
+                setIsRunning(true);
                 setShowEndgame(false);
               }}
             >
