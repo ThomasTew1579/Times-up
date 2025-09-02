@@ -7,7 +7,7 @@ function Home() {
         Modes de jeu
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <GameCard href="/game/classic/setup">
+        {/* <GameCard href="/game/classic/setup">
           <h2 className="text-5xl text-stroke font-primary">Classique</h2>
         </GameCard>
         <GameCard href="/game/custom/setup">
@@ -15,16 +15,16 @@ function Home() {
         </GameCard>
         <GameCard href="/game/chill/setup">
           <h2 className="text-5xl text-stroke font-primary">Chill</h2>
-        </GameCard>
+        </GameCard> */}
 
         <GameCard href="/setup" gameType="classic">
-          <h2 className="text-5xl text-stroke font-primary">Classique test</h2>
+          <h2 className="text-5xl text-stroke font-primary">Classique</h2>
         </GameCard>
         <GameCard href="/setup" gameType="custom">
-          <h2 className="text-5xl text-stroke font-primary">Custom test</h2>
+          <h2 className="text-5xl text-stroke font-primary">Custom</h2>
         </GameCard>
         <GameCard href="/setup" gameType="chill">
-          <h2 className="text-5xl text-stroke font-primary">Chill test</h2>
+          <h2 className="text-5xl text-stroke font-primary">Chill</h2>
         </GameCard>
       </div>
     </main>
