@@ -5,7 +5,7 @@ import Home from './pages/Home';
 
 import Proposal from './pages/Proposal';
 import GameSetup from './pages/GameSetup';
-import CustomCardsSetup from './pages/CustomCardsSetup';
+import CardsSetup from './pages/CardsSetup';
 import Game from './pages/Game';
 
 function App() {
@@ -17,11 +17,10 @@ function App() {
       </Menu>
       <Routes>
         <Route path="/" element={<Home />} />
-
         <Route path="/proposal" element={<Proposal />} />
         <Route path="/setup" element={<GameSetup />} />
         <Route path="/game" element={<Game />} />
-        <Route path="/cards-setup" element={<CustomCardsSetup />} />
+        <Route path="/cards-setup" element={<CardsSetup />} />
       </Routes>
     </>
   );
