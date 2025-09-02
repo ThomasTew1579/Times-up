@@ -91,7 +91,7 @@ export function floorToMultiple(value: number, step: number): number {
   if (!Number.isFinite(value) || !Number.isFinite(step)) {
     throw new TypeError("value et step doivent être des nombres finis");
   }
-  if (step === 0) return value; // ou throw new RangeError("step ne doit pas être 0");
-  const m = Math.abs(step);     // accepte step négatif
+  if (step === 0) return value; 
+  const m = Math.abs(step);     
   return Math.floor(value / m) * m;
 }
