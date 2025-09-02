@@ -20,7 +20,7 @@ const RoundRecap: React.FC<RoundRecapProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur px-4">
       <div className="w-full max-w-lg rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 dark:text-white p-6 shadow-xl">
-        <h2 className="text-xl font-semibold mb-4">Manche {currentRound} summary</h2>
+        <h2 className="text-xl font-semibold mb-4">Récapitulatif de la manche {currentRound}</h2>
         <div className="space-y-2 mb-4">
           {Array.from({ length: players }).map((_, idx) => (
             <div key={idx} className="flex justify-between text-sm">
@@ -30,7 +30,7 @@ const RoundRecap: React.FC<RoundRecapProps> = ({
                     ? `Joueur ${idx + 1}`
                     : `Équipe ${idx + 1}`)}
               </span>
-              <span>{scoresByRound[currentRound - 1]?.[idx] ?? 0} validated</span>
+              <span>{scoresByRound[currentRound - 1]?.[idx] ?? 0} validées</span>
             </div>
           ))}
         </div>

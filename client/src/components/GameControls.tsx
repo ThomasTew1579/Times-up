@@ -36,12 +36,12 @@ const GameControls: React.FC<GameControlsProps> = ({
           onClick={onSkip}
           disabled={!isRunning || !hasCard}
         >
-          Skip
+          Passer
         </button>
       )}
       {showTeams && (
         <div className="ml-auto text-sm text-zinc-600 dark:text-zinc-300">
-          Round {currentRound} score: {scoresByRound[currentRound - 1]?.[currentPlayerIndex] ?? 0}
+          Score manche {currentRound} : {scoresByRound[currentRound - 1]?.[currentPlayerIndex] ?? 0}
         </div>
       )}
     </section>

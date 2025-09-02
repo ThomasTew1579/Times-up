@@ -32,12 +32,12 @@ const GameHeader: React.FC<GameHeaderProps> = ({
       <div className="ml-auto flex items-center text-white gap-3">
         {showTeams && (
           <div className="text-sm">
-            {teamNames.length > 0 && teamNames[0].includes('Joueur') ? 'Joueur' : 'Team'}{' '}
+            {teamNames.length > 0 && teamNames[0].includes('Joueur') ? 'Joueur' : 'Équipe'}{' '}
             <span className="font-semibold">
               {teamNames[currentPlayerIndex] ??
                 (teamNames.length > 0 && teamNames[0].includes('Joueur')
                   ? `Joueur ${currentPlayerIndex + 1}`
-                  : `Team ${currentPlayerIndex + 1}`)}
+                  : `Équipe ${currentPlayerIndex + 1}`)}
             </span>{' '}
             ({currentPlayerIndex + 1}/{players})
           </div>

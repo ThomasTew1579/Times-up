@@ -29,9 +29,9 @@ const Scoreboard: React.FC<ScoreboardProps> = ({
               {teamNames[idx] ??
                 (teamNames.length > 0 && teamNames[0].includes('Joueur')
                   ? `Joueur ${idx + 1}`
-                  : `Team ${idx + 1}`)}
+                  : `Équipe ${idx + 1}`)}
               <div>
-                Total:{' '}
+                Total :{' '}
                 {(scoresByRound[0]?.[idx] ?? 0) +
                   (scoresByRound[1]?.[idx] ?? 0) +
                   (scoresByRound[2]?.[idx] ?? 0)}

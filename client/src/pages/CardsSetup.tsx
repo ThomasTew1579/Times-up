@@ -57,10 +57,10 @@ function CardsSetup() {
       setPlayerNames(
         names.length
           ? names
-          : Array.from({ length: Math.max(2, p || player) }, (_, i) => `Team ${i + 1}`)
+          : Array.from({ length: Math.max(2, p || player) }, (_, i) => `Équipe ${i + 1}`)
       );
     } else {
-      setPlayerNames(Array.from({ length: Math.max(2, p || player) }, (_, i) => `Team ${i + 1}`));
+      setPlayerNames(Array.from({ length: Math.max(2, p || player) }, (_, i) => `Équipe ${i + 1}`));
     }
   }, [searchParams, player]);
 
@@ -224,11 +224,7 @@ function CardsSetup() {
               </div>
             </div>
 
-            {isAdmin && (
-              <Dropdown title="Aperçu du JSON">
-                {finalJsonText}
-              </Dropdown>
-            )}
+            {isAdmin && <Dropdown title="Aperçu du JSON">{finalJsonText}</Dropdown>}
 
             {isAdmin && finalCards.length > 0 && (
               <div className="mt-6 flex gap-2">

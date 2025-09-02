@@ -26,13 +26,13 @@ const FinalResults: React.FC<FinalResultsProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur px-4">
       <div className="w-full max-w-xl rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 dark:text-white p-6 shadow-xl">
-        <h2 className="text-xl font-semibold mb-4">Final results</h2>
+        <h2 className="text-xl font-semibold mb-4">Résultats finaux</h2>
         <div className="overflow-x-auto mb-4">
           <table className="w-full text-sm">
             <thead>
               <tr className="text-left text-zinc-600 dark:text-zinc-300">
                 <th className="py-1 pr-3">
-                  {teamNames.length > 0 && teamNames[0].includes('Joueur') ? 'Joueur' : 'Team'}
+                  {teamNames.length > 0 && teamNames[0].includes('Joueur') ? 'Joueur' : 'Équipe'}
                 </th>
                 <th className="py-1 pr-3">R1</th>
                 <th className="py-1 pr-3">R2</th>
@@ -47,10 +47,10 @@ const FinalResults: React.FC<FinalResultsProps> = ({
                     {teamNames[idx] ??
                       (teamNames.length > 0 && teamNames[0].includes('Joueur')
                         ? `Joueur ${idx + 1}`
-                        : `Team ${idx + 1}`)}
+                        : `Équipe ${idx + 1}`)}
                     {total === topTotal && total > 0 && (
                       <span className="ml-2 inline-flex items-center rounded px-2 py-0.5 text-xs font-medium bg-emerald-600 text-white">
-                        Winner
+                        Vainqueur
                       </span>
                     )}
                   </td>
@@ -68,13 +68,13 @@ const FinalResults: React.FC<FinalResultsProps> = ({
             className="rounded-md border border-zinc-200 dark:border-zinc-700 px-3 py-2 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800"
             onClick={onPlayAgain}
           >
-            Play again
+            Rejouer
           </button>
           <button
             className="rounded-md border border-zinc-200 dark:border-zinc-700 px-3 py-2 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800"
             onClick={onBackToHome}
           >
-            Back to home
+            Retour à l'accueil
           </button>
         </div>
       </div>
