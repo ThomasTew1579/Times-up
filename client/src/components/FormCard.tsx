@@ -1,8 +1,8 @@
 type Item = {
-  author?: string; // autheur de la proposition
-  category?: string; // catégorie du perso
-  name: string; // nom
-  description: string; // description
+  author?: string;
+  category?: string;
+  name: string;
+  description: string;
   startDate?: number | null;
   endDate?: number | null;
 };
