@@ -82,3 +82,16 @@ export function buildDeckIndices(
 export function initScoresMatrix(rounds: number, players: number): number[][] {
   return Array.from({ length: rounds }, () => Array(players).fill(0));
 }
+
+/**
+ * Arrondit vers le bas (−∞) au multiple de `step` le plus proche.
+ * Exemple: floorToMultiple(53, 8) -> 48
+ */
+export function floorToMultiple(value: number, step: number): number {
+  if (!Number.isFinite(value) || !Number.isFinite(step)) {
+    throw new TypeError("value et step doivent être des nombres finis");
+  }
+  if (step === 0) return value; // ou throw new RangeError("step ne doit pas être 0");
+  const m = Math.abs(step);     // accepte step négatif
+  return Math.floor(value / m) * m;
+}

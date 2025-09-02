@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { floorToMultiple } from '../hooks/helpers';
 import IntermissionCard from '../components/IntermissionCard';
 import ClassicRules from '../components/ClassicRules';
 import Dropdown from '../components/Dropdown';
@@ -173,13 +174,10 @@ function GameSetup() {
               min={teams}
               max={500}
               step={teams}
-              value={nbCartes}
-              onChange={(e) => setNbCartes(Math.max(teams, Number(e.target.value)))}
+              value={floorToMultiple(Number(nbCartes), teams)}
+              onChange={(e) => setNbCartes(Math.max(teams, floorToMultiple(Number(e.target.value), teams)))}
               className="w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:text-white dark:bg-primary-900 px-3 py-2 text-sm"
             />
-            <div className="text-sm text-white">
-              {nbCartes} cartes (seront arrondies pour être réparties uniformément)
-            </div>
           </div>
         )}
 
