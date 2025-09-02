@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import IntermissionCard from '../components/IntermissionCard';
 import ClassicRules from '../components/ClassicRules';
+import Dropdown from '../components/Dropdown';
+
 
 type GameParams = {
   rules: boolean;
@@ -91,16 +93,13 @@ function GameSetup() {
   return (
     <main className="mx-auto container max-w-xl px-4 py-8">
       <h1 className="text-3xl font-bold font-primary text-center text-white mb-6">
-        test Mode {gameType} - Configuration
+        Configuration
       </h1>
 
       {gameTypeParams.rules && (
-        <details className="rounded-2xl border mb-4 border-zinc-200 p-2 md:p-4">
-          <summary className="cursor-pointer  text-white select-none font-medium">
-            Règle deu jeu
-          </summary>
+        <Dropdown title="Règle deu jeu">
           <ClassicRules />
-        </details>
+        </Dropdown>
       )}
 
       <form onSubmit={onSubmit} className="space-y-6">
