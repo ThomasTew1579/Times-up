@@ -1,8 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import FormCard from '../components/FormCard';
 import IntermissionCard from '../components/IntermissionCard';
 import Dropdown from '../components/Dropdown';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import { selectTeams, selectTeamNames } from '../store/selectors';
+import { setTeams, setCustomCards } from '../store/settingsSlice';
 
 type Item = {
   name: string;
@@ -20,7 +23,6 @@ type Container = {
   submissions: PlayerSubmission[];
 };
 
-const CONTAINER_KEY = 'timesup:submissions';
 const CARDS_PER_PLAYER = 2;
 
 const makeContainer = (): Container => ({
@@ -35,51 +37,20 @@ const isAdmin: boolean = false;
 
 function CardsSetup() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const [player, setJoueurs] = useState(4);
+  const dispatch = useAppDispatch();
+  const player = useAppSelector(selectTeams);
   const [currentPlayerIndex] = useState(0);
-  const [playerNames, setPlayerNames] = useState<string[]>([]);
+  const playerNames = useAppSelector(selectTeamNames);
   const [shownCardsCreator, setShownCardsCreator] = useState(true);
   const [showIntermissionCreator, setShowIntermissionCreator] = useState(true);
   const [currentPlayerCreat, setCurrentPlayerCreat] = useState(currentPlayerIndex);
   const [items, setItems] = useState<Item[]>([{ name: '', description: '' }]);
 
   useEffect(() => {
-    const p = Number(searchParams.get('teams'));
-    if (!Number.isNaN(p) && p >= 2 && p <= 10) {
-      setJoueurs(p);
-    }
-    const namesParam = searchParams.get('namesParam');
-    if (namesParam) {
-      const names = decodeURIComponent(namesParam)
-        .split('|')
-        .slice(0, Math.max(2, p || player));
-      setPlayerNames(
-        names.length
-          ? names
-          : Array.from({ length: Math.max(2, p || player) }, (_, i) => `Équipe ${i + 1}`)
-      );
-    } else {
-      setPlayerNames(Array.from({ length: Math.max(2, p || player) }, (_, i) => `Équipe ${i + 1}`));
-    }
-  }, [searchParams, player]);
+    dispatch(setTeams(player));
+  }, [dispatch, player]);
 
-  const [container, setContainer] = useState<Container>(() => {
-    try {
-      const raw = localStorage.getItem(CONTAINER_KEY);
-      return raw ? (JSON.parse(raw) as Container) : makeContainer();
-    } catch {
-      return makeContainer();
-    }
-  });
-
-  useEffect(() => {
-    try {
-      localStorage.setItem(CONTAINER_KEY, JSON.stringify(container));
-    } catch (e) {
-      console.error('Erreur ', e);
-    }
-  }, [container]);
+  const [container, setContainer] = useState<Container>(() => makeContainer());
 
   const addItem = () => setItems((prev) => [...prev, { name: '', description: '' }]);
 
@@ -130,12 +101,9 @@ function CardsSetup() {
       );
 
     if (everyoneDone) {
-      const duration = searchParams.get('duration');
-      const players = searchParams.get('teams');
-      const playerNames = searchParams.get('namesParam');
-      navigate(
-        `/game?gameType=custom&duration=${duration}&teams=${players}&namesParam=${playerNames}`
-      );
+      const customCards = nextSubmissions.flatMap((s) => s.items);
+      dispatch(setCustomCards(customCards));
+      navigate('/game');
       return;
     }
 
@@ -147,11 +115,6 @@ function CardsSetup() {
     if (confirm('Effacer toutes les propositions enregistrées ?')) {
       setContainer(makeContainer());
       setItems([{ name: '', description: '' }]);
-      try {
-        localStorage.removeItem(CONTAINER_KEY);
-      } catch (e) {
-        console.error('Erreur ', e);
-      }
     }
   }
 

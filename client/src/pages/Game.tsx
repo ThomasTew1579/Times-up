@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import cardsList from '../assets/cards_list.json';
 import GameCard from '../components/GameCard';
 import IntermissionCard from '../components/IntermissionCard';
@@ -9,9 +9,8 @@ import Scoreboard from '../components/Scoreboard';
 import RoundRecap from '../components/RoundRecap';
 import FinalResults from '../components/FinalResults';
 import { useGameInit } from '../hooks/useGameInit';
-import { readContainerFromStorage } from '../hooks/helpers';
-
-const CONTAINER_KEY = 'timesup:submissions';
+import { useAppSelector } from '../hooks/redux';
+import { selectGameType, selectNbCartes, selectCustomCards } from '../store/selectors';
 
 function shuffle<T>(array: T[]): T[] {
   const a = array.slice();
@@ -23,11 +22,9 @@ function shuffle<T>(array: T[]): T[] {
 }
 
 function Game() {
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const container = readContainerFromStorage(CONTAINER_KEY);
-  const customCards = container.submissions.flatMap((s) => s.items);
-  const gameType = searchParams.get('gameType') as 'classic' | 'chill' | 'custom' | null;
+  const customCards = useAppSelector(selectCustomCards);
+  const gameType = useAppSelector(selectGameType) as 'classic' | 'chill' | 'custom' | null;
   const currentCards = gameType === 'custom' ? customCards : cardsList;
   const cardsMemo = useMemo(() => currentCards, [currentCards]);
   const {
@@ -52,9 +49,9 @@ function Game() {
   const [showEndgame, setShowEndgame] = useState(false);
   const [initialized, setInitialized] = useState(false);
   const [showFinalRecap, setShowFinalRecap] = useState(false);
+  const requested = useAppSelector(selectNbCartes);
   const deckIndices = useMemo(() => {
     const total = cardsMemo.length;
-    const requested = Number(searchParams.get('nbCartes'));
     const target = !Number.isNaN(requested) && requested > 0 ? Math.min(requested, total) : total;
     const equitable = gameTypeParams.teams
       ? Math.floor(target / Math.max(2, players)) * Math.max(2, players)
@@ -62,7 +59,7 @@ function Game() {
     const indices = Array.from({ length: total }, (_, i) => i);
     const shuffled = shuffle(indices);
     return shuffled.slice(0, equitable > 0 ? equitable : Math.max(2, players));
-  }, [cardsMemo, players, searchParams, gameTypeParams.teams]);
+  }, [cardsMemo, players, gameTypeParams.teams, requested]);
 
   useEffect(() => {
     if (!isRunning || remaining <= 0) return;
@@ -96,7 +93,7 @@ function Game() {
       setIsRunning(true);
       setInitialized(true);
     }
-  }, [searchParams, deckIndices, initialized, players, scoresByRound.length]);
+  }, [deckIndices, initialized, players, scoresByRound.length]);
 
   const card = pendingIndices.length > 0 ? cardsMemo[pendingIndices[0]] : undefined;
   const totalCards = deckIndices.length;

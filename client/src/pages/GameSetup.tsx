@@ -1,9 +1,18 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { floorToMultiple } from '../hooks/helpers';
 import IntermissionCard from '../components/IntermissionCard';
 import ClassicRules from '../components/ClassicRules';
 import Dropdown from '../components/Dropdown';
+import { useAppSelector, useAppDispatch } from '../hooks/redux';
+import {
+  selectDuration,
+  selectTeams,
+  selectTeamNames,
+  selectNbCartes,
+  selectGameType,
+} from '../store/selectors';
+import { setDuration, setTeams, setTeamName, setNbCartes } from '../store/settingsSlice';
 
 type GameParams = {
   rules: boolean;
@@ -14,17 +23,15 @@ type GameParams = {
   namesParam: boolean;
 };
 
-const CONTAINER_KEY = 'timesup:submissions';
-
 function GameSetup() {
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [duration, setDuration] = useState<number>(45);
-  const [teams, setTeams] = useState<number>(2);
-  const [teamNames, setTeamNames] = useState<string[]>(['Équipe 1', 'Équipe 2']);
-  const [nbCartes, setNbCartes] = useState<number>(40);
+  const dispatch = useAppDispatch();
+  const duration = useAppSelector(selectDuration);
+  const teams = useAppSelector(selectTeams);
+  const teamNames = useAppSelector(selectTeamNames);
+  const nbCartes = useAppSelector(selectNbCartes);
   const [showIntermission, setShowIntermission] = useState<boolean>(false);
-  const gameType = searchParams.get('gameType');
+  const gameType = useAppSelector(selectGameType);
 
   const gameTypeParams: GameParams = useMemo(() => {
     switch (gameType) {
@@ -68,26 +75,12 @@ function GameSetup() {
   }, [gameType]);
 
   useEffect(() => {
-    setTeamNames((prev) => {
-      const next = prev.slice(0, teams);
-      while (next.length < teams) next.push(`Équipes ${next.length + 1}`);
-      return next;
-    });
-  }, [teams]);
+    dispatch(setTeams(teams));
+  }, [dispatch, teams]);
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const namesParam = encodeURIComponent(teamNames.join('|'));
-    if (gameTypeParams.cardsCutom) {
-      try {
-        localStorage.removeItem(CONTAINER_KEY);
-      } catch (e) {
-        console.error('Erreur ', e);
-      }
-    }
-    navigate(
-      `/${gameTypeParams.cardsCutom ? 'cards-setup' : 'game'}?gameType=${gameType}${gameTypeParams.duration ? '&duration=' + duration : ''}${gameTypeParams.nbCartes ? '&nbCartes=' + nbCartes : ''}${gameTypeParams.teams ? '&teams=' + teams : ''}${gameTypeParams.namesParam ? '&namesParam=' + namesParam : ''}`
-    );
+    navigate(`/${gameTypeParams.cardsCutom ? 'cards-setup' : 'game'}`);
   }
 
   return (
@@ -107,7 +100,7 @@ function GameSetup() {
             <select
               id="duration"
               value={duration}
-              onChange={(e) => setDuration(Number(e.target.value))}
+              onChange={(e) => dispatch(setDuration(Number(e.target.value)))}
             >
               <option value={20}>20 secondes 🔴</option>
               <option value={30}>30 secondes 🟠</option>
@@ -126,7 +119,7 @@ function GameSetup() {
               min={2}
               max={6}
               value={teams}
-              onChange={(e) => setTeams(Number(e.target.value))}
+              onChange={(e) => dispatch(setTeams(Number(e.target.value)))}
               className="w-full"
             />
             <div className="text-sm text-white">{teams} équipes</div>
@@ -137,14 +130,12 @@ function GameSetup() {
           <div className="space-y-2">
             <label>Noms des équipes</label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              {teamNames.map((name, idx) => (
+              {teamNames.map((name: string, idx: number) => (
                 <input
                   key={idx}
                   type="text"
                   value={name}
-                  onChange={(e) =>
-                    setTeamNames((arr) => arr.map((n, i) => (i === idx ? e.target.value : n)))
-                  }
+                  onChange={(e) => dispatch(setTeamName({ index: idx, name: e.target.value }))}
                   placeholder={`Équipes ${idx + 1}`}
                 />
               ))}
@@ -163,7 +154,9 @@ function GameSetup() {
               step={teams}
               value={floorToMultiple(Number(nbCartes), teams)}
               onChange={(e) =>
-                setNbCartes(Math.max(teams, floorToMultiple(Number(e.target.value), teams)))
+                dispatch(
+                  setNbCartes(Math.max(teams, floorToMultiple(Number(e.target.value), teams)))
+                )
               }
             />
           </div>

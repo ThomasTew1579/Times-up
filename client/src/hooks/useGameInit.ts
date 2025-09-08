@@ -1,8 +1,14 @@
 import { useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useAppSelector } from './redux';
+import {
+  selectGameType,
+  selectDuration,
+  selectTeams,
+  selectNbCartes,
+  selectTeamNames,
+} from '../store/selectors';
 import {
   parseGameTypeParams,
-  coerceNumberParam,
   clampNumber,
   deriveTeamNames,
   buildDeckIndices,
@@ -71,15 +77,14 @@ type UseGameInitInput = {
  * const [pending, setPending] = useState(deckIndices);
  */
 export function useGameInit({ cards, defaultPlayers = 4, defaultDuration = 60 }: UseGameInitInput) {
-  const [searchParams] = useSearchParams();
-
-  const gameType = searchParams.get('gameType') as 'classic' | 'chill' | 'custom' | null;
+  const gameType = useAppSelector(selectGameType) as 'classic' | 'chill' | 'custom' | null;
   const gameTypeParams: GameParams = useMemo(() => parseGameTypeParams(gameType), [gameType]);
 
-  const durationParam = coerceNumberParam(searchParams.get('duration'));
-  const playersParam = coerceNumberParam(searchParams.get('teams') ?? searchParams.get('players'));
-  const nbCartesParam = coerceNumberParam(searchParams.get('nbCartes'));
-  const teamNamesParam = searchParams.get('namesParam');
+  const durationParam = useAppSelector(selectDuration);
+  const playersParam = useAppSelector(selectTeams);
+  const nbCartesParam = useAppSelector(selectNbCartes);
+  const teamNamesArr = useAppSelector(selectTeamNames);
+  const teamNamesParam = teamNamesArr.join('|');
 
   const duration = useMemo(
     () => (durationParam ? clampNumber(durationParam, 1, 600) : defaultDuration),

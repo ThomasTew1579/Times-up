@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
+import { useAppDispatch } from '../hooks/redux';
+import { setGameType } from '../store/settingsSlice';
 
 type GameCardProps = {
   children?: ReactNode;
@@ -11,7 +13,7 @@ type GameCardProps = {
 
 function GameCard({ children, title, href, gameType }: GameCardProps) {
   const [displayCard, setDisplayCard] = useState(true);
-  const gameTypeUrl: string = gameType ? '?gameType=' + gameType : '';
+  const dispatch = useAppDispatch();
 
   function handleClickCard() {
     return displayCard ? setDisplayCard(false) : setDisplayCard(true);
@@ -20,7 +22,12 @@ function GameCard({ children, title, href, gameType }: GameCardProps) {
   if (href)
     return (
       <Link
-        to={href + gameTypeUrl}
+        to={href}
+        onClick={() => {
+          if (gameType === 'classic' || gameType === 'custom' || gameType === 'chill') {
+            dispatch(setGameType(gameType));
+          }
+        }}
         end={href ? '/' : ''}
         className="card-link block p-2 rounded-2xl max-w-96 shadow-2xl outline-2 outline-primary-900 bg-white aspect-[85/55] relative hover:rotate-1 hover:scale-[90%] duration-200"
       >
