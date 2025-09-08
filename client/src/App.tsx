@@ -11,7 +11,7 @@ const Game = lazy(() => import('./pages/Game'));
 const Proposal = lazy(() => import('./pages/Proposal'));
 
 function Fallback() {
-  return <div className="p-6 text-center text-white font-primary">Chargement…</div>; 
+  return <div className="p-6 text-center text-white font-primary">Chargement…</div>;
 }
 
 function App() {

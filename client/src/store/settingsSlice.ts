@@ -6,10 +6,10 @@ export type CustomCard = { name: string; description?: string; date?: string };
 
 export interface SettingsState {
   gameType: GameType;
-  duration: number; 
+  duration: number;
   teams: number;
   teamNames: string[];
-  nbCartes: number; 
+  nbCartes: number;
   customCards: CustomCard[];
 }
 
