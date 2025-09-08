@@ -1,12 +1,18 @@
 import { Routes, Route } from 'react-router-dom';
+import { Suspense, lazy } from 'react';
+
 import Menu from './components/Menu';
 import MenuItem from './components/MenuItem';
-import Home from './pages/Home';
 
-import Proposal from './pages/Proposal';
-import GameSetup from './pages/GameSetup';
-import CardsSetup from './pages/CardsSetup';
-import Game from './pages/Game';
+const Home = lazy(() => import('./pages/Home'));
+const Setup = lazy(() => import('./pages/GameSetup'));
+const CardsSetup = lazy(() => import('./pages/CardsSetup'));
+const Game = lazy(() => import('./pages/Game'));
+const Proposal = lazy(() => import('./pages/Proposal'));
+
+function Fallback() {
+  return <div className="p-6 text-center text-white font-primary">Chargement…</div>; 
+}
 
 function App() {
   return (
@@ -15,13 +21,15 @@ function App() {
         <MenuItem href="/">Accueil</MenuItem>
         <MenuItem href="/proposal">Propositions</MenuItem>
       </Menu>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/proposal" element={<Proposal />} />
-        <Route path="/setup" element={<GameSetup />} />
-        <Route path="/game" element={<Game />} />
-        <Route path="/cards-setup" element={<CardsSetup />} />
-      </Routes>
+      <Suspense fallback={<Fallback />}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/setup" element={<Setup />} />
+          <Route path="/cards-setup" element={<CardsSetup />} />
+          <Route path="/game" element={<Game />} />
+          <Route path="/proposal" element={<Proposal />} />
+        </Routes>
+      </Suspense>
     </>
   );
 }

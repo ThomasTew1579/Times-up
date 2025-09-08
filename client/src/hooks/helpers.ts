@@ -61,15 +61,9 @@ export type Container = {
  * const container = readContainerFromStorage('timesup:submissions');
  * const allItems = container.submissions.flatMap(s => s.items);
  */
-export function readContainerFromStorage(key: string): Container {
-  try {
-    const raw = localStorage.getItem(key);
-    return raw
-      ? (JSON.parse(raw) as Container)
-      : { schemaVersion: 1, sessionId: '', submissions: [] };
-  } catch {
-    return { schemaVersion: 1, sessionId: '', submissions: [] };
-  }
+export function readContainerFromStorage(_key: string): Container {
+  // Obsolète: ne lit plus le localStorage (migration contexte Redux)
+  return { schemaVersion: 1, sessionId: '', submissions: [] };
 }
 
 /**
