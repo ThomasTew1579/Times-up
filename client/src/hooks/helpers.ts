@@ -39,32 +39,6 @@ export type GameParams = {
  *   ]
  * }
  */
-export type Container = {
-  schemaVersion: 1;
-  sessionId: string;
-  submissions: Array<{
-    player: string;
-    items: Array<{ name: string; description: string; date?: string }>;
-  }>;
-};
-
-/**
- * Lit un conteneur JSON depuis le localStorage et renvoie une valeur sûre par défaut en cas d'erreur.
- *
- * - Ne lève pas d'exception : toute erreur de parsing ou clé absente renvoie un conteneur vide.
- * - Sans effet de bord autre que l'accès lecture au localStorage.
- *
- * @param key Clé du localStorage sous laquelle est sérialisé le conteneur.
- * @returns   Un objet `Container` valide.
- *
- * @example
- * const container = readContainerFromStorage('timesup:submissions');
- * const allItems = container.submissions.flatMap(s => s.items);
- */
-export function readContainerFromStorage(_key: string): Container {
-  // Obsolète: ne lit plus le localStorage (migration contexte Redux)
-  return { schemaVersion: 1, sessionId: '', submissions: [] };
-}
 
 /**
  * Convertit un type de partie logique (`classic`, `chill`, `custom`) en flags `GameParams`.
