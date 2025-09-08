@@ -4,12 +4,12 @@ import { useState } from 'react';
 
 type GameCardProps = {
   children?: ReactNode;
-  title?: string
+  title?: string;
   href?: string;
   gameType?: string;
 };
 
-function GameCard({ children, title,  href, gameType }: GameCardProps) {
+function GameCard({ children, title, href, gameType }: GameCardProps) {
   const [displayCard, setDisplayCard] = useState(true);
   const gameTypeUrl: string = gameType ? '?gameType=' + gameType : '';
 
@@ -25,7 +25,10 @@ function GameCard({ children, title,  href, gameType }: GameCardProps) {
         className="card-link block p-2 rounded-2xl max-w-96 shadow-2xl outline-2 outline-primary-900 bg-white aspect-[85/55] relative hover:rotate-1 hover:scale-[90%] duration-200"
       >
         <div className="flex h-full flex-col gap-12 justify-center items-center p-4 bg-spirale bg-secondary-500 outline-primary-900  rounded-xl overflow-clip relative">
-          <div className="content flex flex-col h-auto gap-12 justify-cente z-20"> <span>{title}</span></div>
+          <div className="content flex flex-col h-auto gap-12 justify-cente z-20">
+            {' '}
+            <span>{title}</span>
+          </div>
           <svg
             className="absolute w-10 bottom-1 z-10 right-1"
             xmlns="http://www.w3.org/2000/svg"

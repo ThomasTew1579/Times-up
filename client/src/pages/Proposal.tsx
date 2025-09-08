@@ -111,21 +111,13 @@ export default function CharacterJsonMailer() {
       </div>
 
       <div className="mt-4 flex gap-3">
-        <button
-          type="button"
-          onClick={addItem}
-          className="btn-primary"
-        >
+        <button type="button" onClick={addItem} className="btn-primary">
           + Ajouter un élément
         </button>
       </div>
 
       <div className="mt-6">
-        {isAdmin && (
-          <Dropdown title="Aperçu du JSON">
-            {payload}
-          </Dropdown>
-        )}
+        {isAdmin && <Dropdown title="Aperçu du JSON">{payload}</Dropdown>}
 
         {tooLong && (
           <p className="mt-3 text-amber-700">
@@ -138,11 +130,7 @@ export default function CharacterJsonMailer() {
           <a href={mailtoHref} className="btn-primary">
             Envoyer !
           </a>
-          <button
-            type="button"
-            onClick={copyJson}
-            className="btn-primary"
-          >
+          <button type="button" onClick={copyJson} className="btn-primary">
             Copier le JSON
           </button>
         </div>

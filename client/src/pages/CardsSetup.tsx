@@ -164,9 +164,7 @@ function CardsSetup() {
       {shownCardsCreator && (
         <div className=" flex items-center justify-center py-8 px-4 ">
           <div className="w-full rounded-lg max-h-dvh overflow-auto  ">
-            <h1 className="title-1">
-              Mode custom - Création des cartes
-            </h1>
+            <h1 className="title-1">Mode custom - Création des cartes</h1>
             <p className="mb-4 text-sm text-zinc-700 dark:text-zinc-300">
               {playerNames[currentPlayerCreat % player] ??
                 `Équipe ${(currentPlayerCreat % player) + 1}`}

@@ -28,7 +28,6 @@ type UseGameInitInput = {
   defaultDuration?: number;
 };
 
-
 /**
  * Hook d'initialisation de partie basé sur les query params.
  *

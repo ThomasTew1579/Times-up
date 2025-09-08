@@ -64,16 +64,10 @@ const FinalResults: React.FC<FinalResultsProps> = ({
           </table>
         </div>
         <div className="flex gap-2 justify-end">
-          <button
-            className="btn-confirm"
-            onClick={onPlayAgain}
-          >
+          <button className="btn-confirm" onClick={onPlayAgain}>
             Rejouer
           </button>
-          <button
-            className="btn-confirm"
-            onClick={onBackToHome}
-          >
+          <button className="btn-confirm" onClick={onBackToHome}>
             Retour à l'accueil
           </button>
         </div>

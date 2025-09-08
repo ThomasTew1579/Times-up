@@ -42,10 +42,7 @@ export default function FormCard({ item, onChange, creator }: Props) {
       {creator !== true && (
         <div>
           <label className="block text-sm text-white font-medium mb-1">Catégorie</label>
-          <select
-            value={item.category}
-            onChange={(e) => onChange({ category: e.target.value })}
-          >
+          <select value={item.category} onChange={(e) => onChange({ category: e.target.value })}>
             {OBJECT_TYPES.map((opt) => (
               <option key={opt} value={opt}>
                 {opt}

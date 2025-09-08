@@ -5,7 +5,6 @@ import IntermissionCard from '../components/IntermissionCard';
 import ClassicRules from '../components/ClassicRules';
 import Dropdown from '../components/Dropdown';
 
-
 type GameParams = {
   rules: boolean;
   duration: boolean;
@@ -93,9 +92,7 @@ function GameSetup() {
 
   return (
     <main className="mx-auto container max-w-xl px-4 py-8">
-      <h1 className="title-1">
-        Configuration
-      </h1>
+      <h1 className="title-1">Configuration</h1>
 
       {gameTypeParams.rules && (
         <Dropdown title="Règle deu jeu">
@@ -106,9 +103,7 @@ function GameSetup() {
       <form onSubmit={onSubmit} className="space-y-6 form-card ">
         {gameTypeParams.duration && (
           <div className="space-y-2">
-            <label htmlFor="duration">
-              Durée du tour
-            </label>
+            <label htmlFor="duration">Durée du tour</label>
             <select
               id="duration"
               value={duration}
@@ -124,9 +119,7 @@ function GameSetup() {
 
         {gameTypeParams.teams && (
           <div className="space-y-2">
-            <label htmlFor="teams">
-              Nombre d'équipes
-            </label>
+            <label htmlFor="teams">Nombre d'équipes</label>
             <input
               id="teams"
               type="range"
@@ -142,9 +135,7 @@ function GameSetup() {
 
         {gameTypeParams.namesParam && (
           <div className="space-y-2">
-            <label>
-              Noms des équipes
-            </label>
+            <label>Noms des équipes</label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {teamNames.map((name, idx) => (
                 <input
@@ -163,9 +154,7 @@ function GameSetup() {
 
         {gameTypeParams.nbCartes && (
           <div className="space-y-2">
-            <label htmlFor="nbCartes">
-              Nombre de cartes
-            </label>
+            <label htmlFor="nbCartes">Nombre de cartes</label>
             <input
               id="nbCartes"
               type="number"
@@ -173,17 +162,15 @@ function GameSetup() {
               max={500}
               step={teams}
               value={floorToMultiple(Number(nbCartes), teams)}
-              onChange={(e) => setNbCartes(Math.max(teams, floorToMultiple(Number(e.target.value), teams)))}
+              onChange={(e) =>
+                setNbCartes(Math.max(teams, floorToMultiple(Number(e.target.value), teams)))
+              }
             />
           </div>
         )}
 
         <div className="pt-2">
-          <button
-            type="button"
-            className="btn-submit"
-            onClick={() => setShowIntermission(true)}
-          >
+          <button type="button" className="btn-submit" onClick={() => setShowIntermission(true)}>
             Démarrer le jeu
           </button>
         </div>
@@ -191,10 +178,7 @@ function GameSetup() {
         {showIntermission && (
           <IntermissionCard>
             <p className="mb-4 text-sm text-zinc-300">Équipe {teamNames[0]}</p>
-            <button
-              type="submit"
-              className="btn-submit"
-            >
+            <button type="submit" className="btn-submit">
               C'est parti !
             </button>
           </IntermissionCard>

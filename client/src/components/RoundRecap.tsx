@@ -36,17 +36,11 @@ const RoundRecap: React.FC<RoundRecapProps> = ({
         </div>
         <div className="flex gap-2 justify-end">
           {currentRound < 3 ? (
-            <button
-              className="btn-confirm"
-              onClick={onNextRound}
-            >
+            <button className="btn-primary" onClick={onNextRound}>
               Tour suivant
             </button>
           ) : (
-            <button
-              className="btn-confirm"
-              onClick={onShowFinalResults}
-            >
+            <button className="btn-primary" onClick={onShowFinalResults}>
               Voir les résultats
             </button>
           )}

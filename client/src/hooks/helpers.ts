@@ -72,7 +72,6 @@ export function readContainerFromStorage(key: string): Container {
   }
 }
 
-
 /**
  * Convertit un type de partie logique (`classic`, `chill`, `custom`) en flags `GameParams`.
  *
@@ -141,7 +140,6 @@ export function coerceNumberParam(v: string | null): number | null {
   const n = Number(v);
   return Number.isNaN(n) ? null : n;
 }
-
 
 /**
  * Construit une liste de noms d'équipe à partir d'une chaîne encodée (séparateur "|"),
@@ -237,9 +235,9 @@ export function initScoresMatrix(rounds: number, players: number): number[][] {
  */
 export function floorToMultiple(value: number, step: number): number {
   if (!Number.isFinite(value) || !Number.isFinite(step)) {
-    throw new TypeError("value et step doivent être des nombres finis");
+    throw new TypeError('value et step doivent être des nombres finis');
   }
-  if (step === 0) return value; 
-  const m = Math.abs(step);     
+  if (step === 0) return value;
+  const m = Math.abs(step);
   return Math.floor(value / m) * m;
 }
