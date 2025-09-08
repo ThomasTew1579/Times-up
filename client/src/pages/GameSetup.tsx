@@ -59,7 +59,7 @@ function GameSetup() {
           duration: true,
           teams: true,
           cardsCutom: true,
-          nbCartes: false,
+          nbCartes: true,
           namesParam: true,
         };
       default:

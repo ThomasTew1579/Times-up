@@ -4,8 +4,9 @@ import FormCard from '../components/FormCard';
 import IntermissionCard from '../components/IntermissionCard';
 import Dropdown from '../components/Dropdown';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { selectTeams, selectTeamNames } from '../store/selectors';
+import { selectTeams, selectTeamNames, selectNbCartes } from '../store/selectors';
 import { setTeams, setCustomCards } from '../store/settingsSlice';
+
 
 type Item = {
   name: string;
@@ -23,8 +24,6 @@ type Container = {
   submissions: PlayerSubmission[];
 };
 
-const CARDS_PER_PLAYER = 2;
-
 const makeContainer = (): Container => ({
   schemaVersion: 1,
   sessionId: crypto?.randomUUID?.() ?? Math.random().toString(36).slice(2),
@@ -41,6 +40,7 @@ function CardsSetup() {
   const player = useAppSelector(selectTeams);
   const [currentPlayerIndex] = useState(0);
   const playerNames = useAppSelector(selectTeamNames);
+  const cardsPerPlayer = useAppSelector(selectNbCartes);  
   const [shownCardsCreator, setShownCardsCreator] = useState(true);
   const [showIntermissionCreator, setShowIntermissionCreator] = useState(true);
   const [currentPlayerCreat, setCurrentPlayerCreat] = useState(currentPlayerIndex);
@@ -72,7 +72,7 @@ function CardsSetup() {
     return { playerName, items: cleaned };
   }, [items, playerNames, currentPlayerCreat, player]);
 
-  const allCardsValid = items.length >= CARDS_PER_PLAYER && items.every(isItemValid);
+  const allCardsValid = items.length >= cardsPerPlayer && items.every(isItemValid);
 
   function nextPlayerCreat() {
     setCurrentPlayerCreat((p) => p + 1);
@@ -96,7 +96,7 @@ function CardsSetup() {
       nextSubmissions.length >= player &&
       nextSubmissions.every(
         (s) =>
-          s.items.length >= CARDS_PER_PLAYER &&
+          s.items.length >= cardsPerPlayer &&
           s.items.every((c) => c.name.trim() && c.description.trim())
       );
 
@@ -159,7 +159,7 @@ function CardsSetup() {
             <div className="flex justify-between w-full">
               <div className="mt-4 flex gap-3">
                 <button
-                  disabled={items.length >= CARDS_PER_PLAYER}
+                  disabled={items.length >= cardsPerPlayer}
                   type="button"
                   onClick={addItem}
                   className="btn-primary "
